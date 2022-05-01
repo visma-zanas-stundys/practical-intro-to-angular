@@ -1,5 +1,6 @@
 {
   "[markdown]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "editor.renderWhitespace": "all"
   }
 }

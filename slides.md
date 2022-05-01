@@ -1,383 +1,829 @@
 ---
-# try also 'default' to start simple
-theme: seriph
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
-# apply any windi css classes to the current slide
-class: 'text-center'
-# https://sli.dev/custom/highlighters.html
+theme: default
+background: https://source.unsplash.com/collection/8807226/1920x1080
 highlighter: shiki
-# show line numbers in code blocks
-lineNumbers: false
-# some information about the slides, markdown enabled
-info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
-# persist drawings in exports and build
-drawings:
-  persist: false
+hideInToc: true
 ---
 
-# Welcome to Slidev
+# Practical introduction to Angular
 
-Presentation slides for developers
-
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
-  </span>
-</div>
-
-<div class="abs-br m-6 flex gap-2">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-    class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
-  </a>
-</div>
+## Day 1
+ 
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
 -->
 
 ---
-
-# What is Slidev?
-
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
-
-<br>
-<br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
+hideInToc: true
 ---
 
-# Navigation
+# Agenda
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
-
-### Keyboard Shortcuts
-
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
+<Toc />
 
 ---
 layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
+image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png
 ---
 
-# Code
+# What is Angular?
 
-Use code snippets and get the highlighting directly![^1]
+Angular is a platform that makes it easy to build applications with the web. 
 
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
+- Declarative templates
+- Dependency injection
+- End to end tooling
+- Integrated best practices
+
+Angular empowers developers to build applications that live on the web, mobile, or the desktop.
+
+---
+layout: image-right
+image: https://mblogthumb-phinf.pstatic.net/MjAxOTA5MThfMjUz/MDAxNTY4Nzc1NjcwODU4.xFOImjrZShTTuPsRzemtz1FI-RCuruHnMEEGZL3BOEUg.ZQ0MifFlaaGRKn6bmbFCsujHt2kC2V1wQv0hmigWuO4g.PNG.bluesky4381/TypeScript_JavaScript.png?type=w800
+---
+
+# What is Typescript?
+
+Typescript is a superset of Javascript.
+
+- Expands the language of Javascript with types, enums, decorators and more
+- TypeScript is used together with Angular
+- [Typescript Playground](https://www.typescriptlang.org/play)
+
+---
+hideInToc: true
+---
+
+# Typescript example
+
+```ts {1|3-8|10-14|16-19|21-24|all}
+const myLanguage: 'js' | 'ts' = 'ts';
+
+enum CodingSkill {
+  Junior,    // 0
+  Mid,       // 1
+  Senior,    // 2
+  Macaronni, // 3
 }
 
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
+interface Candidate {
+  name: string;
+  skill: CodingSkill;
+  language: 'js' | 'ts';
 }
+
+const developer: Candidate {
+  name: 'John Doe',
+  skill: CodingSkill.Advanced,
+  language: 'ts'
+}
+
+function evaluateCandidate(someCandidate: Candidate): boolean { ... };
 ```
 
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
 ---
 
-# Components
+# Workshop #1 - Creating an Angular project
+
+The Angular CLI makes it easy to create an application that already works,
+right out of the box.
 
 <div grid="~ cols-2 gap-4">
 <div>
 
-You can use Vue components directly inside your slides.
+0. Make sure you have NodeJS installed on your system:
 
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
+    ```sh
+    $ node -v
+    ```
 
-```html
-<Counter :count="10" />
-```
+1. After NodeJS is installed in the system, install Angular CLI with:
 
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
+    ```sh
+    $ npm install -g @angular/cli
+    ```
 
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
+2. Create a new project with `ng new <project-name>`
+
+    ```sh
+    $ ng new workshop-project-1 # Creates an Angular project
+    $ cd workshop-project-1 # Open the project directory
+    $ ng serve # Serves the application
+    ```
 
 </div>
 <div>
 
-```html
-<Tweet id="1390115482657726468" />
-```
+Commmon commands of the Angular CLI
 
-<Tweet id="1390115482657726468" scale="0.65" />
+- `ng serve` Hosts the project code for development on `http://localhost:4200`
+- `ng build` Builds the project code for production
+- `ng lint` Checks for code style errors
+- `ng test` Runs tests contained in the project
+- `ng generate` Generate code for building blocks)
+  ```sh
+  ng generate component product-card
+  ```
 
-</div>
-</div>
-
-
----
-class: px-20
----
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
 
 </div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
+</div>
 
 ---
-preload: false
+
+# Project structure
+
+```
+- src/index.html
+- src/styles.css
+- src/main.ts
+- src/assets/*
+- src/environments/*
+- angular.json
+- src/app/*
+```
+
+---
+hideInToc: true
 ---
 
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
+# Project structure - src/index.html
 
 ```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NgWorkshop</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
 ```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
 
 ---
-
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
-
-<br>
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
-
+hideInToc: true
 ---
 
-# Diagrams
+# Project structure - src/styles.css
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
+```css
+/* You can add global styles to this file, and also import other style files */
 
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
+body {
+  font-family: 'Open Sans', sans-serif;
+}
 ```
 
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
+
+---
+hideInToc: true
+---
+
+# Project structure - src/main.ts
+
+```ts {all|4|11-12|all|5-9}
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));
 ```
 
-```plantuml {scale: 0.7}
-@startuml
 
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
+---
+hideInToc: true
+---
 
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
+# Project structure - src/environments/environment.ts
 
-cloud {
-  [Example 1]
-}
+```ts
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
 
+export const environment = {
+  production: false
+};
+```
 
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
+---
+hideInToc: true
+---
+
+# Project structure - angular.json
+
+```ts {all|13|14-16|18-25|27-31|all}
+{
+  ...
+  "defaultProject": "ng-workshop",
+  "projects": {
+    "ng-workshop": {
+      ...
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ng-workshop",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": { ... },
+            "development": { ... }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": { ... },
+        "extract-i18n": { ... },
+        "test": { ... }
+      }
+    }
   }
-  frame "Foo" {
-    [Frame 4]
-  }
 }
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
 ```
+
+<style>
+.shiki-container  {
+  max-height: 400px;
+  overflow: auto;
+}
+</style>
+
+---
+hideInToc: true
+--- 
+
+# Project structure - src/app folder
+
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+Majority of the application's logic will reside in the `src/app` folder.
+
+By default Angular CLI generates an `app.component` and `app.module` in the `src/app` folder.
 
 </div>
+<div>
 
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
 
+<img style="width: 300px;" src="/images/project-tree.png">
+
+</div>
+</div>
 
 ---
 layout: center
 class: text-center
+hideInToc: true
 ---
 
-# Learn More
+# 10 minute break
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+<Countdown seconds="600" />
+
+---
+
+
+# Component based architecture
+
+<img src="/images/component-architecture.png">
+
+---
+
+# Building blocks
+
+
+<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
+
+```mermaid {scale: 1}
+graph RL
+A1[layout.component] --> A[(app.module)] 
+B(products.module) --> A
+B1[product-card.component] --> B
+B2[product-list.component] --> B
+S(shared.module) --> B
+S --> C
+S --> D
+S1(button.component) --> S
+S2(price.pipe) --> S
+S3(analytics.directive) --> S
+S4(data-table.component) --> S
+S4(trial-countdown.component) --> S
+C(orders.module) --> A
+D(account.module) --> A
+
+classDef App fill:#e1bee7,stroke:black
+classDef Feature1 fill:#ffe0b2,stroke:black
+classDef Feature2 fill:#d7ccc8,stroke:black
+classDef Feature3 fill:#cfd8dc,stroke:black
+classDef Shared fill:#c8e6c9,stroke:black
+
+class A,A1 App;
+class B,B1,B2 Feature1;
+class C Feature2;
+class D Feature3;
+class S,S1,S2,S3,S4,S5 Shared;
+```
+
+</div>
+
+---
+hideInToc: true
+---
+
+# Building blocks - @NgModule
+
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+Classes with decorators
+
+- Modules
+  - @NgModule
+
+</div>
+
+<div> 
+
+
+```ts
+@NgModule({
+  imports: [
+    CommonModule,
+    SharedModule,
+    ...
+  ],
+  declarations: [
+    ProductsListComponent,
+    ProductCardComponent,
+    ...
+  ],
+  providers: [ ProductsService, ... ],
+  exports: [ ... ]
+})
+export class ProductsModule {}
+```
+
+</div>
+</div>
+
+<!--
+Declares a compilation context for a set of components that is dedicated to an application domain, a workflow, or a closely related set of capabilities.
+-->
+ 
+---
+hideInToc: true
+---
+
+# Building blocks - @Component
+
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+Classes with decorators
+
+- Modules
+  - @NgModule
+- Declarables
+  - @Component
+
+</div>
+
+<div> 
+
+```ts
+@Component({
+  selector: 'app-product-card',
+  template: `
+    <h4>{{ product.name }}</h4>
+    <span [class.text-red]="product.isOnSale">
+      {{ product.price | currency }}
+    </span>
+    <br/>
+    <button type="button" (click)="onBuyClick()">Buy now!</button>
+  `,
+})
+export class ProductCardComponent {
+  @Input() product: Product;
+}
+```
+
+```html
+<app-product-card [product]="products[0]"></app-product-card>
+```
+
+</div>
+</div>
+
+<!--
+Defines a class that contains application data and logic, and is associated with an HTML template that defines a view to be displayed in a target environment.
+-->
+
+---
+hideInToc: true
+---
+
+# Building blocks - @Directive
+
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+Classes with decorators
+
+- Modules
+  - @NgModule
+- Declarables
+  - @Component
+  - @Directive
+
+
+</div>
+<div>
+
+
+```ts
+@Directive({ selector: '[appButton]', })
+export class ButtonDirective {
+  @Input() variant: 'primary' | 'secondary';
+
+  @HostBinding('attr.disabled')
+  @Input()
+  isLoading = false;
+}
+```
+
+```html
+<button appButton [isLoading]="true">Place order</button>
+```
+
+</div>
+</div>
+
+
+---
+hideInToc: true
+---
+
+# Building blocks - @Pipe
+
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+Classes with decorators
+
+- Modules
+  - @NgModule
+- Declarables
+  - @Component
+  - @Directive
+  - @Pipe
+
+
+</div>
+<div>
+
+```ts
+@Pipe({ name: 'likeEmoji', })
+export class LikeEmojiPipe implements PipeTransform {
+  transform(value: boolean): '👍' | '👎' {
+    return value ? '👍' : '👎';
+  }
+}
+```
+
+```html
+<div>{{ product.reviewScore > 5 | likeEmoji }}</div>
+```
+
+</div>
+</div>
+
+---
+hideInToc: true
+---
+ 
+# Building blocks - @Injectable
+
+
+<div grid="~ cols-2 gap-4">
+<div>
+
+Classes with decorators
+
+- Modules
+  - @NgModule
+- Declarables
+  - @Component
+  - @Directive
+  - @Pipe
+- Injectables
+  - @Injectable (services, guards, interceptors, resolvers, etc...)
+
+
+</div>
+<div>
+
+```ts
+@Injectable({ providedIn: 'root', })
+export class ProductsService {
+  getAllProducts() {
+    return [
+      { id: 1, name: 'Nike Shoes', price: 1000 },
+      { id: 2, name: 'Adidas Pants', price: 2000 },
+    ];
+  }
+}
+```
+
+```ts
+@Component({
+  template: `
+    Total products: {{ products.length }}<br/>
+
+    <app-product-card
+      *ngFor="let product of products"
+      [product]="product
+    ></app-product-card>`
+})
+export class ListComponent {
+  products: Product[] = this.productsService.getAllProducts();
+
+  constructor(private productsService: ProductsService) {} 
+}
+```
+ 
+</div>
+</div>
+
+<!--
+A service class definition is immediately preceded by the @Injectable() decorator. The decorator provides the metadata that allows other providers to be injected as dependencies into your class.
+ -->
+ 
+---
+layout: center
+---
+ 
+# Template syntax
+
+---
+layout: iframe
+url: https://stackblitz.com/edit/angular-ivy-lqd9ao?file=src/app/app.component.html
+---
+
+---
+hideInToc: true
+---
+
+# Template syntax
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <input [value]="firstName">
+  ```
+
+  Binds property `value` to the result of expression `firstName`.
+
+</section>
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <div [attr.role]="myAriaRole">...</div>
+  ```
+
+  Binds attribute `role` to the result of expression `myAriaRole`.
+
+</section>
+
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <div [class.extra-sparkle]="isDelightful">...</div>
+  ```
+
+  Binds the presence of the CSS class `extra-sparkle` on the element to the truthiness of the expression `isDelightful`.
+
+</section>
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <div [style.width.px]="200">...</div>
+  ```
+
+  Binds style property width to the result of expression 200 in pixels. Units are optional.
+
+</section>
+
+---
+hideInToc: true
+---
+
+# Template syntax
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <button (click)="readRainbow($event)">...</button>
+  ```
+  
+  Calls method `readRainbow` when a `click` event is triggered on this `<button>` element (or its children) and passes in the event object.
+</section>
+
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <div title="Hello {{ponyName}}">...</div>
+  ```
+
+  Binds a property to an interpolated string, for example,
+  "Hello Seabiscuit". Equivalent to: `<div [title]="'Hello ' + ponyName">...</div>`
+
+</section>
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <p>Hello {{ponyName}}</p>
+  ```
+
+  Binds text content to an interpolated string, for example, "Hello Seabiscuit".
+</section>
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <app-component [(value)]="name">...</app-component>
+  ```
+
+  Sets up two-way data binding. Equivalent to:  
+  `<app-component [value]="name" (value)="name = $event">...</app-component>`
+
+</section>
+
+---
+hideInToc: true
+---
+
+# Template syntax
+
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <video #videoRef ...></video>
+  <button (click)="videoRef.play()">Play</button>
+  ```
+
+  Creates a local variable `videoRef` that provides access to the `<video>` element instance in data-binding and event-binding expressions in the current template.
+
+</section>
+
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <p>Card No.: {{ cardNumber | formatCardNumber }}</p>
+  ```
+
+  Transforms the current value of expression `cardNumber` via the pipe called `formatCardNumber`.
+
+</section>
+
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <p>Employer: {{ employer?.companyName }}</p>
+  ```
+
+  The optional chaining operator (?) means that the `employer` field can be `undefined`. If that's the case, the rest of the expression is handled without any errors.
+
+</section>
+
+
+---
+hideInToc: true
+---
+
+# Template syntax
+
+<section class="grid grid-cols-2 gap-4">
+
+  ```html
+  <p *myUnless="myExpression">...</p>
+  ```
+
+  <div>
+
+  The `*` symbol turns the current element into an embedded template. Equivalent to: 
+
+  ```html
+  <ng-template [myUnless]="myExpression">
+    <p>...</p>
+  </ng-template>
+  ```
+
+  </div>
+
+
+</section>
+
+
+---
+layout: center
+---
+
+# Built-in directives
+
+---
+layout: iframe
+url: https://stackblitz.com/edit/angular-ivy-n2a9lv?embed=1&file=src/app/app.component.html
+preload: false
+---
+
+---
+
+# Built-in directives
+
+By importing the CommonModule (or BrowserModule in app.module.ts), the following directives are available:
+
+
+## Built-in directives *ngIf
+
+Removes or recreates a portion of the DOM tree based on
+
+the showSection expression.
+
+```html
+<section *ngIf="isTrialOver">...</section>
+```
+
+## Built-in directives *ngFor
+
+Turns the li element and its contents into a template, and
+uses that to instantiate a view for each item in list.
+
+```html
+<li *ngFor="let product of products; let i = index">#{{index}} {{product.name}}</li>
+```
+
+## Built-in directives [ngSwitch], ngSwitchCase, ngSwitchDefault
+
+Conditionally swaps the contents of the div by selecting one
+of the embedded templates based on the current value of
+conditionExpression.
+
+```html
+<div [ngSwitch]="car.quality">
+  <ng-template [ngSwitchCase]="'new'">The car is new and will be pricy</ng-template>
+  <ng-template ngSwitchCase="used">The car is used</ng-template>
+  <ng-template ngSwitchCase="broken">The car is not fit for driving</ng-template>
+  <ng-template ngSwitchDefault>The car costs {{ car.price }}</ng-template>
+</div>
+```
+
+## Built-in directives [ngClass]
+
+Binds the presence of CSS classes on the element to the
+truthiness of the associated map values. The right-hand
+expression should return {class-name: true/false} map.
+
+## Built-in directives [ngStyle]
+
+Allows you to assign styles to an HTML element using CSS.
+You can use CSS directly, as in the first example, or you can
+call a method from the component.
