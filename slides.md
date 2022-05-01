@@ -321,22 +321,22 @@ hideInToc: true
 
 <div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
 
-```mermaid {scale: 1}
+```mermaid {scale: 0.95}
 graph RL
 A1[layout.component] --> A[(app.module)] 
-B(products.module) --> A
+B(products.module) --> |exports| A
 B1[product-card.component] --> B
 B2[product-list.component] --> B
-S(shared.module) --> B
-S --> C
-S --> D
+S(shared.module) --> |exports| B
+S --> |exports| C
+S --> |exports| D
 S1(button.component) --> S
 S2(price.pipe) --> S
 S3(analytics.directive) --> S
 S4(data-table.component) --> S
 S4(trial-countdown.component) --> S
-C(orders.module) --> A
-D(account.module) --> A
+C(orders.module) --> |exports| A
+D(account.module) --> |exports| A
 
 classDef App fill:#e1bee7,stroke:black
 classDef Feature1 fill:#ffe0b2,stroke:black
@@ -365,8 +365,8 @@ hideInToc: true
 
 Classes with decorators
 
-- Modules
-  - @NgModule
+- Modules (can be included in imports[] or exports[])
+  - `@NgModule`
 
 </div>
 
@@ -410,10 +410,10 @@ hideInToc: true
 
 Classes with decorators
 
-- Modules
-  - @NgModule
-- Declarables
-  - @Component
+- Modules (can be included in imports[] or exports[])
+  - `@NgModule`
+- Declarables (must be included in declarations[], optionally in exports[])
+  - `@Component`
 
 </div>
 
@@ -459,11 +459,11 @@ hideInToc: true
 
 Classes with decorators
 
-- Modules
-  - @NgModule
-- Declarables
-  - @Component
-  - @Directive
+- Modules (can be included in imports[] or exports[])
+  - `@NgModule`
+- Declarables (must be included in declarations[], optionally in exports[])
+  - `@Component`
+  - `@Directive`
 
 
 </div>
@@ -501,12 +501,12 @@ hideInToc: true
 
 Classes with decorators
 
-- Modules
-  - @NgModule
-- Declarables
-  - @Component
-  - @Directive
-  - @Pipe
+- Modules (can be included in imports[] or exports[])
+  - `@NgModule`
+- Declarables (must be included in declarations[], optionally in exports[])
+  - `@Component`
+  - `@Directive`
+  - `@Pipe`
 
 
 </div>
@@ -540,14 +540,14 @@ hideInToc: true
 
 Classes with decorators
 
-- Modules
-  - @NgModule
-- Declarables
-  - @Component
-  - @Directive
-  - @Pipe
-- Injectables
-  - @Injectable (services, guards, interceptors, resolvers, etc...)
+- Modules (can be included in imports[] or exports[])
+  - `@NgModule`
+- Declarables (must be included in declarations[], optionally in exports[])
+  - `@Component`
+  - `@Directive`
+  - `@Pipe`
+- Injectables (can be included in providers[])
+  - `@Injectable` (services, guards, interceptors, resolvers, etc...)
 
 
 </div>
