@@ -318,9 +318,6 @@ hideInToc: true
 
 # Building blocks
 
-
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
 ```mermaid {scale: 0.95}
 graph RL
 A1[layout.component] --> A[(app.module)] 
@@ -350,8 +347,6 @@ class C Feature2;
 class D Feature3;
 class S,S1,S2,S3,S4,S5 Shared;
 ```
-
-</div>
 
 ---
 hideInToc: true
