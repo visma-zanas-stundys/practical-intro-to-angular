@@ -23,8 +23,7 @@ hideInToc: true
 <Toc />
 
 ---
-layout: image-right
-image: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png
+layout: two-cols
 ---
 
 # What is Angular?
@@ -36,11 +35,12 @@ Angular is a platform that makes it easy to build applications with the web.
 - End to end tooling
 - Integrated best practices
 
-Angular empowers developers to build applications that live on the web, mobile, or the desktop.
+::right::
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png" />
 
 ---
-layout: image-right
-image: https://mblogthumb-phinf.pstatic.net/MjAxOTA5MThfMjUz/MDAxNTY4Nzc1NjcwODU4.xFOImjrZShTTuPsRzemtz1FI-RCuruHnMEEGZL3BOEUg.ZQ0MifFlaaGRKn6bmbFCsujHt2kC2V1wQv0hmigWuO4g.PNG.bluesky4381/TypeScript_JavaScript.png?type=w800
+layout: two-cols
 ---
 
 # What is Typescript?
@@ -50,6 +50,11 @@ Typescript is a superset of Javascript.
 - Expands the language of Javascript with types, enums, decorators and more
 - TypeScript is used together with Angular
 - [Typescript Playground](https://www.typescriptlang.org/play)
+
+::right::
+
+<img src="https://mblogthumb-phinf.pstatic.net/MjAxOTA5MThfMjUz/MDAxNTY4Nzc1NjcwODU4.xFOImjrZShTTuPsRzemtz1FI-RCuruHnMEEGZL3BOEUg.ZQ0MifFlaaGRKn6bmbFCsujHt2kC2V1wQv0hmigWuO4g.PNG.bluesky4381/TypeScript_JavaScript.png?type=w800" />
+
 
 ---
 hideInToc: true
@@ -86,8 +91,6 @@ function evaluateCandidate(someCandidate: Candidate): boolean { ... };
 
 # Workshop #1 - Creating an Angular project
 
-The Angular CLI makes it easy to create an application that already works,
-right out of the box.
 
 <div grid="~ cols-2 gap-4">
 <div>
@@ -114,6 +117,30 @@ right out of the box.
 
 </div>
 <div>
+ 
+3. Add a bootstrap CSS library to the `index.html` file.  
+   https://getbootstrap.com/docs/5.1/getting-started/introduction/
+
+4. Use Google Fonts to add a custom font to the `index.html` file (weights 400, 700).
+   https://fonts.google.com/
+
+5. Change the default font-family used in `styles.css` file:
+
+    ```css
+    :root {
+        --bs-font-sans-serif: 'YOUR FONT HERE', sans-serif;
+    }
+    ```
+
+ 
+</div>
+</div>
+
+---
+hideInToc: true
+---
+
+# Workshop #1 - Creating an Angular project
 
 Commmon commands of the Angular CLI
 
@@ -127,9 +154,6 @@ Commmon commands of the Angular CLI
   ```
 
 
-</div>
-</div>
-
 ---
 
 # Project structure
@@ -140,6 +164,7 @@ Commmon commands of the Angular CLI
 - src/main.ts
 - src/assets/*
 - src/environments/*
+- package.json
 - angular.json
 - src/app/*
 ```
@@ -149,6 +174,8 @@ hideInToc: true
 ---
 
 # Project structure - src/index.html
+
+Contains the initial HTML code of the application.
 
 ```html
 <!doctype html>
@@ -172,6 +199,8 @@ hideInToc: true
 
 # Project structure - src/styles.css
 
+Global styles of the application.
+
 ```css
 /* You can add global styles to this file, and also import other style files */
 
@@ -186,6 +215,8 @@ hideInToc: true
 ---
 
 # Project structure - src/main.ts
+
+Initializes the app by bootstrapping the AppModule
 
 ```ts {all|4|11-12|all|5-9}
 import { enableProdMode } from '@angular/core';
@@ -209,6 +240,8 @@ hideInToc: true
 
 # Project structure - src/environments/environment.ts
 
+Environment specific data can be placed inside (development vs production).
+
 ```ts
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
@@ -217,6 +250,40 @@ hideInToc: true
 export const environment = {
   production: false
 };
+```
+
+
+---
+hideInToc: true
+---
+
+# Project structure - package.json
+
+Metadata, dependencies and scripts of the project.
+
+```json {all|4-11|12-16|17-21}
+{
+    "name": "ng-workshop",
+    ...
+    // Scripts to trigger various commands. For example: `npm run build`
+    "scripts": {
+        "serve": "ng serve",
+        "build": "ng build",
+        "lint": "ng lint",
+        "test": "ng test",
+        "e2e": "ng e2e"
+    },
+    "dependencies": {
+        "@angular/**": "version number", // All Angular dependencies
+        "rxjs": "version number", // Library to handle asynchronous data streams (remote data fetching, etc.)
+        ...
+    },
+    "devDependencies": {
+        "karma-*": "version number", // Test runner
+        "jasmine-*": "version number", // Test assertion library
+        ...
+    }
+}
 ```
 
 ---
@@ -286,7 +353,9 @@ hideInToc: true
 
 Majority of the application's logic will reside in the `src/app` folder.
 
-By default Angular CLI generates an `app.component` and `app.module` in the `src/app` folder.
+By default Angular CLI adds: 
+- `app.component`
+- `app.module`
 
 </div>
 <div>
@@ -583,6 +652,19 @@ export class ListComponent {
 <!--
 A service class definition is immediately preceded by the @Injectable() decorator. The decorator provides the metadata that allows other providers to be injected as dependencies into your class.
  -->
+
+---
+
+# Things to know about components
+
+- Template syntax
+- Property/Method decorators (`@Input`, `@Output`)
+- Built-in directives (`*ngIf`, `*ngFor`)
+- Lifecycle hooks (`ngOnInit`, `ngOnDestroy`)
+- Styling/Encapsulation
+- Content projection
+- Change detection
+- Local dependency injection
  
 ---
 layout: center
@@ -753,10 +835,56 @@ hideInToc: true
   ```
 
   </div>
+</section>
 
+---
+
+# Workshop #2 - Creating an Restaurant card
+
+<section class="grid grid-cols-[1fr,auto] gap-4">
+
+<div>
+
+1. ```sh
+    ng generate module restaurants --module app
+    ```
+
+3. ```sh
+    ng generate component restaurants/restaurant-card --export
+    ```
+   
+   Data for the restaurant can be hard-coded in the `.html` file
+
+4.  ```html
+    <!-- app.component.html -->
+    <app-restaurant-card
+      imageUrl="xxx.jpg"
+      name="Jammi Kebabai"
+      address="Stoties g. 22"
+      [distanceInKm]="4.5"
+      [rating]="7.5"
+    ></app-restaurant-card>
+    ```
+
+    Update the component with @Input() to pass properties listed above.
+
+
+</div>
+
+<img style="width: 300px" src="/sketches/workshop-2.svg">
 
 </section>
 
+
+---
+layout: center
+class: text-center
+hideInToc: true
+---
+
+# 5 minute break
+
+<Countdown seconds="300" />
 
 ---
 layout: center
