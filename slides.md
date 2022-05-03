@@ -962,6 +962,8 @@ export class ButtonComponent {
 
 # Workshop #2 - Creating an Restaurant card
 
+Branch: `workshop-2-start`
+
 <section class="grid grid-cols-[1fr,auto] gap-4">
 
 <div>
@@ -1009,9 +1011,12 @@ hideInToc: true
 
 ---
 layout: center
+class: text-center
 ---
 
 # Built-in directives
+
+Exported by CommonModule
 
 ---
 layout: iframe
@@ -1020,54 +1025,128 @@ preload: false
 ---
 
 ---
+hideInToc: true
+---
 
-# Built-in directives
+# Built-in directives *ngIf
 
-By importing the CommonModule (or BrowserModule in app.module.ts), the following directives are available:
-
-
-## Built-in directives *ngIf
-
-Removes or recreates a portion of the DOM tree based on
-
-the showSection expression.
+Displays given element if the expression is truthy.  
+Accepts `else` to display a different template if expression is falsy.
 
 ```html
-<section *ngIf="isTrialOver">...</section>
+<ng-container *ngIf="isTrialOver; else daysLeftRef">
+    Your trial has ended.
+</ng-container>
+
+<ng-template #daysLeftRef>
+    Days left: {{ daysLeft }}
+</ng-template>
+
 ```
 
-## Built-in directives *ngFor
+---
+hideInToc: true
+---
 
-Turns the li element and its contents into a template, and
-uses that to instantiate a view for each item in list.
+# Built-in directives *ngFor
+
+Allows to iterate over a collection of items and display them in the shared template.
 
 ```html
-<li *ngFor="let product of products; let i = index">#{{index}} {{product.name}}</li>
+<ol>
+    <li *ngFor="let task of tasks" [class.text-red]="task.isHighPriority">
+        {{ task.title }} due: {{task.deadline}}
+    </li>
+</ol>
 ```
 
-## Built-in directives [ngSwitch], ngSwitchCase, ngSwitchDefault
+```ts
+@Component(...)
+export class TaskListComponent {
+    tasks: Task[] = [
+        { title: 'Task 1', deadline: '2020-01-01', isHighPriority: false },
+        { title: 'Task 2', deadline: '2020-01-02', isHighPriority: true },
+        { title: 'Task 3', deadline: '2020-01-03', isHighPriority: false },
+    ];
+}
+```
 
-Conditionally swaps the contents of the div by selecting one
-of the embedded templates based on the current value of
-conditionExpression.
+---
+hideInToc: true
+---
+
+
+# Built-in directives [ngSwitch], ngSwitchCase, ngSwitchDefault
+
+Renders the template that matches the `ngSwitchCase`.  
+If no match is found, displays the `ngSwitchDefault` template.
 
 ```html
 <div [ngSwitch]="car.quality">
-  <ng-template [ngSwitchCase]="'new'">The car is new and will be pricy</ng-template>
+  <ng-template ngSwitchCase="new">The car is new and will be pricy</ng-template>
   <ng-template ngSwitchCase="used">The car is used</ng-template>
   <ng-template ngSwitchCase="broken">The car is not fit for driving</ng-template>
-  <ng-template ngSwitchDefault>The car costs {{ car.price }}</ng-template>
+  <ng-template ngSwitchDefault>The car is fit for purchase</ng-template>
 </div>
 ```
 
-## Built-in directives [ngClass]
+---
+hideInToc: true
+---
 
-Binds the presence of CSS classes on the element to the
-truthiness of the associated map values. The right-hand
-expression should return {class-name: true/false} map.
+# Built-in directives [ngClass]
 
-## Built-in directives [ngStyle]
+Applies classes if value is truthy.  
+The right-hand expression should return `{ "class-name": true | false }`
 
-Allows you to assign styles to an HTML element using CSS.
-You can use CSS directly, as in the first example, or you can
-call a method from the component.
+```html
+<div [ngClass]='{
+    "text-bold": true,
+    "text-green": car.price <= averageCarPrice
+  }'>...</div>
+```
+
+---
+hideInToc: true
+---
+
+# Built-in directives [ngStyle]
+
+Applies style declarations to the expression result  
+The right-hand expression should return `{ "declaration-name": ... }`
+
+```html
+<div [ngStyle]='{
+    "font-size": "1.5em",
+    "font-weight": "bold",
+    "color": car.price > averageCarPrice ? "red" : "green"
+  }'>...</div>
+```
+
+---
+
+# Lifecycle hooks
+
+After creating a component/directive by calling its constructor, Angular
+calls the lifecycle hook methods in the following sequence at specific
+moments:
+
+```ts
+export class AppComponent implements OnChanges, OnInit, OnDestroy, ... {
+    // ! Common
+    // ? Sometimes
+    // - Rare
+
+    constructor(...) { ... }                    // ! Called before any lifecycle hooks
+
+    ngOnChanges(changes: SimpleChanges) { ... } // ? Called after a bound input property changes & before first render
+    ngOnInit() { ... }                          // ! Called before first render
+    ngDoCheck() { ... }                         // - Called on every change detection run
+    ngAfterContentInit() { ... }                // - Called after the content passed to the component has been initialized,
+                                                //   but before the component template is fully rendered
+    ngAfterContentChecked() { ... }             // - 
+    ngAfterViewInit() { ... }                   // ? Called after in the component DOM is rendered
+    ngAfterViewChecked() { ... }                // -
+    ngOnDestroy() { ... }                       // ! Called before component is destroyed
+}
+```
