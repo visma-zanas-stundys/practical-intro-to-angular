@@ -838,6 +838,127 @@ hideInToc: true
 </section>
 
 ---
+layout: center
+---
+
+# Property/Method decorators
+
+---
+layout: iframe
+url: https://stackblitz.com/edit/angular-ivy-ncwwfc?file=src/app/fruit.component.ts
+---
+
+---
+hideInToc: true
+---
+
+# Property/Method decorators - @Input()
+
+Allows a property to be passed to a component.
+
+
+```ts
+@Component({
+    template: `Name: {{ name }}, Email: {{ email }}`
+})
+export class AccountCardComponent {
+    @Input() name: string;
+    @Input() email: string;
+}
+```
+
+Usage
+
+```html
+<app-account-card name="John Doe" email="email@example.com"></app-account-card>
+```
+
+---
+hideInToc: true
+---
+
+# Property/Method decorators - @Output()
+
+Used together with `new EventEmitter()` to fire events from a component.
+
+
+```ts
+@Component({
+    template: `
+        <ng-content></ng-content>
+        <button (click)="answer.emit(false)">No</button>
+        <button (click)="answer.emit(true)">Yes</button>
+    `
+})
+export class QuestionComponent {
+    @Output() answer = new EventEmitter<boolean>();
+}
+```
+
+Usage
+
+```html
+<app-question (answer)="checkAnswer($event)">
+    <p>Do you like melons?</p>
+</app-question>
+```
+
+```ts
+checkAnswer(answer: boolean) { ... }
+```
+
+---
+hideInToc: true
+---
+
+# Property/Method decorators - @HostListener()
+
+Allows to listen for events on the host element.
+
+```ts
+@Component({
+    selector: 'app-order'
+})
+export class OrderComponent {
+    @HostListener('click', ['$event'])
+    onClick(event: MouseEvent) {
+        // Clicked on <app-order> element
+    }
+}
+```
+
+---
+hideInToc: true
+---
+
+# Property/Method decorators - @HostBinding()
+
+Allows to set attributes on the host element
+
+```ts
+@Component({ selector: 'app-button' })
+export class ButtonComponent {
+    // Sets the role attribute on the host element
+    // <app-button role="button">...</app-button>
+    @HostBinding('role')
+    readonly role = 'button';
+
+    // Randomly assigns a width on the host element
+    // <app-button style="width: 100px;">...</app-button>
+    @HostBinding('style.width.px')
+    get width(): number {
+        return Math.random() > 0.5 ? 200 : 100;
+    }
+
+    // Adds `active` class on the host element if `active` property is true
+    // <app-button [active]="true" class="active">...</app-button>
+    @HostBinding('class.active')
+    @Input()
+    active = false;
+}
+```
+
+---
 
 # Workshop #2 - Creating an Restaurant card
 
