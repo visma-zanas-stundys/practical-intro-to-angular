@@ -8,11 +8,7 @@ hideInToc: true
 # Practical introduction to Angular
 
 ## Day 1
- 
 
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
 
 ---
 hideInToc: true
@@ -396,11 +392,11 @@ B2[product-list.component] --> B
 S(shared.module) --> |exports| B
 S --> |exports| C
 S --> |exports| D
-S1(button.component) --> S
-S2(price.pipe) --> S
-S3(analytics.directive) --> S
-S4(data-table.component) --> S
-S4(trial-countdown.component) --> S
+S1(card.component) --> S
+S2(data-table.component) --> S
+S3(auto-focus.directive) --> S
+S4(fahrenheit-to-celsius.pipe) --> S
+S5(trial-countdown.component) --> S
 C(orders.module) --> |exports| A
 D(account.module) --> |exports| A
 
@@ -1137,7 +1133,8 @@ export class AppComponent implements OnChanges, OnInit, OnDestroy, ... {
     // ? Sometimes
     // - Rare
 
-    constructor(...) { ... }                    // ! Called before any lifecycle hooks
+    constructor(...) { ... }                    // ! Called before any lifecycle hooks.
+                                                //   Properties with @Input() are not yet set.
 
     ngOnChanges(changes: SimpleChanges) { ... } // ? Called after a bound input property changes & before first render
     ngOnInit() { ... }                          // ! Called before first render
@@ -1150,3 +1147,232 @@ export class AppComponent implements OnChanges, OnInit, OnDestroy, ... {
     ngOnDestroy() { ... }                       // ! Called before component is destroyed
 }
 ```
+
+---
+
+# Workshop #3
+
+List of restaurants  
+Branch: `workshop-3-start`
+
+<section class="grid grid-cols-[1fr,auto] gap-4">
+
+<div>
+
+1. Create a `restaurant-list` component in the restaurants module.
+2. The `restaurant-list` should accept an array of restaurants:
+    ```ts
+    // src/app/interfaces/restaurant.ts
+    export interface Restaurant { discount?: string; ... }
+
+    // src/app/restaurants/restaurant-list.component.ts
+    @Input() restaurants: Restaurant[];
+    ```
+
+3. Use *ngFor directive to display the list of restaurants.
+4. Use *ngIf directive in `restaurant-card` component if a discount is in effect (-20%, "Free shipping", etc).
+
+</div>
+
+<img style="width: 400px" src="/sketches/workshop-3.svg">
+
+</section>
+
+---
+
+# Styling/Encapsulation
+
+TODO
+
+---
+
+# Content projection
+
+TODO
+
+---
+
+# Change detection
+
+TODO
+
+--- 
+
+# Pipes
+
+Angular has a number of built in pipes. Most common are:
+
+- **AsyncPipe** Unwraps a value from an asynchronous primitive, such as a Promise or Observable.
+- **DatePipe** Formats a date value according to locale rules.
+- **UpperCasePipe** Transforms text to all upper case.
+- **LowerCasePipe** Transforms text to all lower case.
+- **CurrencyPipe** Transforms a number to a currency string, formatted according to locale rules.
+- **DecimalPipe** Transforms a number into a string with a decimal point, formatted according to locale rules.
+- **PercentPipe** Transforms a number to a percentage string, formatted according to locale rules.
+
+Usage:
+
+```html
+{{ 20.4 | currency }} <!-- $20.40 -->
+{{ 20 | currency:'EUR':'1.1-2' }} <!-- €20.00 -->
+```
+
+Find out more on https://angular.io/guide/pipes
+
+<!-- Pipes are useful -->
+
+--- 
+
+# Creating your own pipes
+
+- Pipe is a declarable, therefore needs to be added to the `declarations[]` in the containing module.
+- If pipe is intended to be used in other modules, it will need to be added to `exports[]` as well.
+
+```ts
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({ name: 'temperature' })
+export class TemperaturePipe implements PipeTransform {
+    transform(degrees: number, target: 'c' | 'f'): number {
+       return target === 'c' 
+         ? Math.round((degrees - 32) * 5 / 9) + '°C' 
+         : Math.round(degrees * 9 / 5 + 32)   + '°F'
+    }
+}
+```
+
+Usage
+
+```html
+100 degrees in celsius: {{ 100 | temperature: 'c' }} <!-- 38°C  -->
+100 degrees in fahrenheit: {{ 100 | temperature: 'f' | lowercase }} <!-- 212°f -->
+```
+
+---
+
+# Communication between components
+
+TODO
+
+There are number of different methods to communicate:
+- **Pass data from parent to child with input binding**
+- Intercept input property changes with a setter
+- **Intercept input property changes with ngOnChanges()**
+- **Parent listens for child event**
+- Parent interacts with child via local variable
+- Parent calls an @ViewChild()
+- Parent and children communicate via a service
+
+---
+layout: center
+class: text-center
+---
+
+# Services
+
+---
+
+# Creating a service class
+
+Add a `@Injectable({ providedIn: 'root' })` decorator above the class
+
+<div class="grid grid-cols-2">
+
+<div>
+
+- Usually responsible for business logic
+- Accessed through dependency injection
+
+    ```ts
+    export class HeaderComponent {
+        isLoggedIn = this.userService.checkIfUserIsLoggedIn();
+
+        constructor(private userService: UserService) {}
+
+        logout() { this.userService.logout() }
+    }
+    ```
+
+</div>
+
+<div>
+
+- Services can inject other services too
+
+    ```ts
+    @Injectable({ providedIn: 'root' })
+    export class UserService {
+        // Import HttpClient service (provided by HttpClientModule)
+        constructor(private httpClient: HttpClient) {}
+
+        getUserDetails(userId: number): Observable<User> {
+            return this.httpClient.get<User>(`/api/users/${userId}`);
+        }
+    }
+    ```
+
+</div>
+
+</div>
+
+
+Observables might be useful for reactive properties (that change over time).  
+More about Observables [here](https://www.youtube.com/watch?v=65Us8NwmYf4)
+
+---
+layout: iframe
+url: https://stackblitz.com/edit/angular-ivy-7qn8cb?file=src/app/app.component.ts
+---
+
+---
+
+# Workshop #4
+
+Load data for the restaurants remotely via `json-server`. (HttpClientModule should be mentioned somewhere)
+
+TODO
+
+---
+layout: center
+class: text-center
+---
+
+# Routing & Navigation
+
+TODO
+
+The Angular Router enables navigation from one view to the next as users
+perform application tasks.
+- Part of @angular/router package
+- Configured within RouterModule
+- Projects components on router outlet
+
+---
+
+TODO Demo with stackblitz
+
+---
+
+# Things to know about routing
+
+TODO
+
+- Configuration
+- Router outlet
+- Router links
+- Active router links
+- ActivatedRoute state
+- Router events
+- Guards, Resolvers
+
+---
+
+# Workshop #5
+
+TODO  
+
+1. Define a route for the app home page. It should have the same content app.component has now.
+2. Define a route for the restaurant's page. For example: `/restaurants/:id`.
+3. Use a resolver to load the restaurant data by id from the url.
+4. Display detailed restaurant information inside the restaurant's page.
+
