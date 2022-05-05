@@ -16,7 +16,9 @@ hideInToc: true
 
 # Agenda
 
-<Toc />
+<Scroller>
+    <Toc />
+</Scroller>
 
 ---
 layout: two-cols
@@ -660,10 +662,10 @@ A service class definition is immediately preceded by the @Injectable() decorato
 - Styling/Encapsulation
 - Content projection
 - Change detection
-- Local dependency injection
  
 ---
 layout: center
+hideInToc: true
 ---
  
 # Template syntax
@@ -835,6 +837,7 @@ hideInToc: true
 
 ---
 layout: center
+hideInToc: true
 ---
 
 # Property/Method decorators
@@ -953,6 +956,34 @@ export class ButtonComponent {
     active = false;
 }
 ```
+
+---
+hideInToc: true
+---
+
+# Property/Method decorators - @ViewChild()
+
+Gets a reference to the component/element.
+
+```ts
+@Component({
+  selector: 'app-account-card',
+  template: `
+      <p #paragraph>Name: {{ name }}</p>
+  `,
+})
+export class AccountCard implements AfterViewInit {
+  @Input() name: string;
+  @ViewChild('paragraph')
+  private paragraph: ElementRef<HTMLElement>;
+
+  // After component is rendered
+  ngAfterViewInit() {
+    console.log(this.paragraph.nativeElement.innerHTML.length);
+  }
+}
+```
+
 
 ---
 
@@ -1163,7 +1194,7 @@ Branch: `workshop-3-start`
 2. The `restaurant-list` should accept an array of restaurants:
     ```ts
     // src/app/interfaces/restaurant.ts
-    export interface Restaurant { discount?: string; ... }
+    export interface Restaurant { id: number; discount?: string; ... }
 
     // src/app/restaurants/restaurant-list.component.ts
     @Input() restaurants: Restaurant[];
@@ -1182,19 +1213,77 @@ Branch: `workshop-3-start`
 
 # Styling/Encapsulation
 
-TODO
+Encapsulated styles help to avoid component styles from "leaking out" to other parts of the app.
+
+- Encapsulation, by default mangles the generated CSS class names.
+- `:host` selector can be used to apply styles on the host element
+
+```css
+/* app.component.css */
+:host {
+    display: block;
+}
+```
+
+- Use the `encapsulation` property in the `@Component()` decorator to change the behavior.
+
+```ts
+import { Component, ViewEncapsulation } from '@angular/core';
+
+@Component({
+    ...
+    encapsulation: ViewEncapsulation.None
+})
+export class AppComponent {}
+```
+
+Read more: https://angular.io/guide/view-encapsulation
 
 ---
 
 # Content projection
 
-TODO
+What if we want to add HTML content to the component? `<ng-content>` to the rescue!
+ 
+<iframe style="width: 100%; height: 350px;" src="https://stackblitz.com/edit/angular-ivy-udezqd?file=src/app/app.component.html"></iframe>
+
+Read more: https://angular.io/guide/content-projection
 
 ---
 
 # Change detection
 
-TODO
+When Angular updates the HTML of the component
+
+- Component is initialized
+- Component properties change
+
+
+- OnPush strategy as a performance optimization.  
+    Although asynchronous code (setTimeout, HttpClient methods) will not trigger change detection.
+    ```ts
+    @Component({
+        changeDetection: ChangeDetectionStrategy.OnPush
+    })
+    ```
+- `ChangeDetectorRef.markForCheck` method can be used to trigger change detection manually.
+
+    ```ts
+    constructor(private cd: ChangeDetectorRef) {}
+
+    ngOnInit() {
+        this.dataService.getData().subscribe((response) => {
+            this.data = response;
+            this.cd.markForCheck(); // Triggers change detection
+        })
+    }
+    ```
+ 
+---
+layout: iframe
+url: https://stackblitz.com/edit/angular-ivy-ynf7t9?file=src%2Fapp%2Fcountdown%2Fcountdown.component.ts
+---
+
 
 --- 
 
@@ -1247,21 +1336,6 @@ Usage
 100 degrees in celsius: {{ 100 | temperature: 'c' }} <!-- 38°C  -->
 100 degrees in fahrenheit: {{ 100 | temperature: 'f' | lowercase }} <!-- 212°f -->
 ```
-
----
-
-# Communication between components
-
-TODO
-
-There are number of different methods to communicate:
-- **Pass data from parent to child with input binding**
-- Intercept input property changes with a setter
-- **Intercept input property changes with ngOnChanges()**
-- **Parent listens for child event**
-- Parent interacts with child via local variable
-- Parent calls an @ViewChild()
-- Parent and children communicate via a service
 
 ---
 layout: center
@@ -1328,9 +1402,116 @@ url: https://stackblitz.com/edit/angular-ivy-7qn8cb?file=src/app/app.component.t
 
 # Workshop #4
 
-Load data for the restaurants remotely via `json-server`. (HttpClientModule should be mentioned somewhere)
+Create a fake server to fetch remotely with `json-server`  
+Branch: `workshop-4-start`
 
-TODO
+<Scroller>
+
+1. Run `npm install json-server --save-dev`
+2. Create a mock data file `mock-data.js` in the project root.
+3. It should return mock data for the restaurants.
+    ```js
+    module.exports = () => {
+        return {
+            restaurants: [ ... ]
+        }
+    }
+    ```
+4. Create a script in `package.json`:
+    ```json
+    {
+        "scripts": { 
+            "server": "json-server mock-data.js --delay 1000"
+        }
+    }
+5. Launch the server: `npm run server`
+6. Create an api service `ng g service restaurants/restaurant-api`
+7. Import `HttpClientModule` in `app.module.ts`
+8. Inject `HttpClient` into `restaurant-api.service.ts`
+9. Add a method that fetches the restaurants from the server
+
+    ```ts
+    @Injectable({ providedIn: 'root' })
+    export class RestaurantApiService {
+        constructor(private httpClient: HttpClient) {}
+
+        getAll(): Observable<Restaurant[]> {
+            return this.httpClient.get<Restaurant[]>('http://localhost:3000/restaurants');
+        }
+    }
+    ```
+
+10. Create an api service `ng g service restaurants/restaurant-api`
+11. Import `HttpClientModule` in `app.module.ts`
+12. Inject `HttpClient` into `restaurant-api.service.ts`
+13. Add a method that fetches the restaurants from the server
+
+    ```ts
+    @Injectable({ providedIn: 'root' })
+    export class RestaurantApiService {
+        constructor(private httpClient: HttpClient) {}
+
+        getAll(): Observable<Restaurant[]> {
+            return this.httpClient.get<Restaurant[]>('http://localhost:3000/restaurants');
+        }
+    }
+    ```
+
+14. Inject the api service in the `app.component.ts`
+
+    ```ts
+    export class AppComponent {
+        restaurants$ = this.restaurantApi.getAll();
+        
+        constructor(private restaurantApiService: RestaurantApiService) {}
+    }
+    ```
+
+15. Use the `| async` pipe to display the data
+
+    ```html
+    <app-restaurant-list
+      *ngIf="restaurants$ | async as restaurants; else loadingRef"
+      [restaurants]="restaurants"
+    ></app-restaurant-list>
+
+    <ng-template #loadingRef>
+        <output class="text-black-50">Loading...</output>    
+    </ng-template>
+    ```
+</Scroller>
+
+<style>
+    .slidev-layout li {
+        margin-left: 3ch;
+    }
+</style>
+
+---
+layout: center
+class: text-center
+---
+
+# 10 minute break
+
+<Countdown seconds="600" />
+
+---
+
+# Workshop #5
+
+Custom pipes
+Branch: `workshop-5-start`
+
+1. Create a pipe `ng g pipe restaurants/pipes/stars`
+2. It should transform a number 1-10 to star emojis
+3. Used in the `restaurant-card` component should provide a result like so:
+
+    ```html
+    <!-- ⭐⭐⭐⭐⭐ if 10  -->
+    <!-- ⭐ if <=2  -->
+    {{ restaurant.rating | stars }}
+    ```
 
 ---
 layout: center
@@ -1338,6 +1519,10 @@ class: text-center
 ---
 
 # Routing & Navigation
+
+---
+
+# RouterModule
 
 TODO
 
@@ -1367,12 +1552,176 @@ TODO
 
 ---
 
-# Workshop #5
+# Workshop #6
+
+Add routing (List, Detail, Create)
 
 TODO  
 
-1. Define a route for the app home page. It should have the same content app.component has now.
-2. Define a route for the restaurant's page. For example: `/restaurants/:id`.
-3. Use a resolver to load the restaurant data by id from the url.
-4. Display detailed restaurant information inside the restaurant's page.
+<Scroller>
 
+1. Define a route `restaurants` that will lazy load the routes contained in RestaurantsModule
+
+    ```ts
+    const routes: Route[] = [
+        {
+            path: 'restaurants',
+            loadChildren: () => import('./restaurants/restaurants.module').then(m => m.RestaurantsModule)
+        },
+        { path: '**', redirectTo: 'restaurants' }
+    ];
+
+    @NgModule({
+        imports: [
+            ..., // remove RestaurantsModule from the imports
+            RouterModule.forRoot(routes)
+        ]
+    })
+    export class AppModule {}
+    ```
+
+2. Put `<router-outlet></router-outlet>` in the `app.component.html`.  
+    It's placement will impact where the route is rendered in the DOM.
+
+    ```html 
+    <!-- app.component.html -->
+    <router-outlet></router-outlet>
+    ```
+
+3. Add navigation in the `app.component.html`. It should underline the active url.
+
+    ```html
+    <!-- app.component.html -->
+    <nav>
+        <a routerLink="/restaurants" routerLinkActive="active">Home</a>
+        <!-- Covered later -->
+        <a routerLink="/restaurants/new" routerLinkActive="active">Add new restaurant</a>
+    </nav>
+    <router-outlet></router-outlet>
+    ```
+
+4. The lazy loaded module should a child route `''` which would display a list of restaurants:
+
+    ```sh
+    $ ng g c restaurants/pages/restaurants-page
+    ```
+
+    ```ts
+    const routes: Route[] = [
+        {
+            path: '',
+            component: RestaurantsPageComponent
+        }
+    ];
+
+    @NgModule({
+        imports: [
+            ...,
+            RouterModule.forChild(routes)
+        ],
+    })
+    export class RestaurantsModule {}
+    ```
+
+5. Place the logic that displayed a list of restaurants to `RestaurantsPageComponent`. Clicking on a restaurant should navigate to the detail page.
+
+    ```ts
+    <app-restaurant-card
+        *ngFor="let r of restaurants"
+        [restaurant]="r"
+        [routerLink]="[r.id]"
+    ></app-restaurant-card>
+    ```
+
+6. Define a component & route for the page for restaurant create from. For example: `/restaurants/new`. The component itself can be empty for now.
+
+   ```sh
+    $ ng g c restaurants/pages/edit-restaurant-page
+    ```
+
+    ```ts
+    {
+        path: 'new',
+        component: EditRestaurantPageComponent
+    }
+    ```
+
+7. Define a component & route for the page of a single restaurant. For example: `/restaurants/:id`. The component itself can be empty for now.
+
+    ```sh
+    $ ng g c restaurants/pages/restaurant-page
+    ```
+
+    ```ts
+    {
+        path: ':id',
+        component: RestaurantPageComponent,
+        // guards
+        canActivate: [RestaurantGuard], 
+        // resolvers
+        resolve: {
+            restaurant: RestaurantResolver
+         }
+    }
+    ```
+
+8. Use a resolver to load the restaurant data by id from the url.
+
+    ```ts
+    @Injectable({ providedIn: 'root' })
+    export class RestaurantResolver implements Resolve<Restaurant> {
+        // Use the same api service to keep logic separated
+        constructor(private apiService: RestaurantApiService) {}
+
+        resolve(route: ActivatedRouteSnapshot): Observable<Restaurant> {
+            const id = Number(route.params.id);
+            return this.apiService.getOne(id);
+        }
+    }
+    ```
+
+9.  Use a guard to prevent navigation if `id` is not a number.  
+    For example: `/restaurants/something-else`.
+
+    ```ts
+    @Injectable({ providedIn: 'root' })
+    export class RestaurantGuard implements CanActivate {
+        canActivate(route: ActivatedRouteSnapshot): boolean {
+            const id = Number(route.params.id);
+            return !isNaN(id);
+        }
+    }
+    ```
+
+10. Retrieve the resolved restaurant data from `ActivatedRoute` & display detailed restaurant information inside the restaurant's page:
+
+    <div class="grid grid-cols-2 gap-4">
+
+    ```ts
+    // restaurant-page.component.ts
+    @Component(...)
+    export class RestaurantPageComponent {
+        restaurant$ = this.route.data.pipe(
+            map(data => data.restaurant)
+        );
+
+        constructor(private route: ActivatedRoute) {}
+    }
+
+    ```
+
+    ```html
+    <!-- restaurant-page.component.html -->
+    <ng-container *ngIf="restaurant$ | async as restaurant">
+        {{ restaurant.name }}
+        {{ restaurant.rating | stars }}
+
+        {{ restaurant.description }}
+    </ng-container>
+    ```
+
+    </div>
+    
+   
+
+</Scroller>

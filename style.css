@@ -1,4 +1,39 @@
 :root {
   --primary-color: #0aa1dd;
   --primary-muted-color: hsla(197, 91%, 45%, 0.151);
+
+  --scrollbar-track-bg: #f5f5f5;
+  --scrollbar-thumb-bg: #ddd;
+  --slidev-code-radius: 8px;
+}
+
+:root.dark {
+  --scrollbar-track-bg: #333;
+  --scrollbar-thumb-bg: #555;
+}
+
+/* style the scrollbar*/
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-bg);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-bg);
+  border-radius: 10px;
+}
+
+.scroller {
+  overflow: auto;
+  max-height: 340px;
+  padding-right: 1rem;
+}
+
+.scroller ol {
+  padding-left: 1ch;
 }
