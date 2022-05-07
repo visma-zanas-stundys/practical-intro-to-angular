@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build": "slidev build day-1",
-    "dev": "slidev day-1 --open",
-    "export": "slidev export day-1"
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "slidev export"
   },
   "dependencies": {
     "@slidev/cli": "^0.30.3",

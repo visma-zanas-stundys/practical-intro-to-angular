@@ -5,10 +5,9 @@ highlighter: shiki
 hideInToc: true
 ---
 
-# Practical introduction to Angular
+# Day 1
 
-## Day 1
-
+## Practical introduction to Angular
 
 ---
 hideInToc: true
@@ -671,6 +670,7 @@ hideInToc: true
 # Template syntax
 
 ---
+title: Sandbox / Template syntax
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-lqd9ao?file=src/app/app.component.html
 ---
@@ -843,6 +843,7 @@ hideInToc: true
 # Property/Method decorators
 
 ---
+title: Sandbox / Property & Method decorators
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-ncwwfc?file=src/app/fruit.component.ts
 ---
@@ -987,7 +988,7 @@ export class AccountCard implements AfterViewInit {
 
 ---
 
-# Workshop #2 - Creating an Restaurant card
+# Workshop #2 / Creating a restaurant card
 
 Branch: `workshop-2-start`
 
@@ -1032,9 +1033,9 @@ class: text-center
 hideInToc: true
 ---
 
-# 5 minute break
+# 15 minute break
 
-<Countdown seconds="300" />
+<Countdown seconds="900" />
 
 ---
 layout: center
@@ -1046,6 +1047,7 @@ class: text-center
 Exported by CommonModule
 
 ---
+title: Sandbox / Built-in directives
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-n2a9lv?embed=1&file=src/app/app.component.html
 preload: false
@@ -1181,9 +1183,9 @@ export class AppComponent implements OnChanges, OnInit, OnDestroy, ... {
 
 ---
 
-# Workshop #3
+# Workshop #3 / List of restaurants
 
-List of restaurants  
+Use `*ngFor` directive to iterate over a collection of restaurants.  
 Branch: `workshop-3-start`
 
 <section class="grid grid-cols-[1fr,auto] gap-4">
@@ -1210,6 +1212,17 @@ Branch: `workshop-3-start`
 </section>
 
 ---
+layout: center
+class: text-center
+hideInToc: true
+---
+
+# 15 minute break
+
+<Countdown seconds="900" />
+
+---
+
 
 # Styling/Encapsulation
 
@@ -1280,6 +1293,7 @@ When Angular updates the HTML of the component
     ```
  
 ---
+title: Sandbox / Change detection
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-ynf7t9?file=src%2Fapp%2Fcountdown%2Fcountdown.component.ts
 ---
@@ -1394,13 +1408,14 @@ Observables might be useful for reactive properties (that change over time).
 More about Observables [here](https://www.youtube.com/watch?v=65Us8NwmYf4)
 
 ---
+title: Sandbox / Service class demo
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-7qn8cb?file=src/app/app.component.ts
 ---
 
 ---
 
-# Workshop #4
+# Workshop #4 / Fetch data
 
 Create a fake server to fetch remotely with `json-server`  
 Branch: `workshop-4-start`
@@ -1426,7 +1441,7 @@ Branch: `workshop-4-start`
     }
 5. Launch the server: `npm run server`
 6. Create an api service `ng g service restaurants/restaurant-api`
-7. Import `HttpClientModule` in `app.module.ts`
+7. Import `HttpClientModule` in `app.module.ts` from `@angular/common/http`
 8. Inject `HttpClient` into `restaurant-api.service.ts`
 9. Add a method that fetches the restaurants from the server
 
@@ -1441,23 +1456,7 @@ Branch: `workshop-4-start`
     }
     ```
 
-10. Create an api service `ng g service restaurants/restaurant-api`
-11. Import `HttpClientModule` in `app.module.ts`
-12. Inject `HttpClient` into `restaurant-api.service.ts`
-13. Add a method that fetches the restaurants from the server
-
-    ```ts
-    @Injectable({ providedIn: 'root' })
-    export class RestaurantApiService {
-        constructor(private httpClient: HttpClient) {}
-
-        getAll(): Observable<Restaurant[]> {
-            return this.httpClient.get<Restaurant[]>('http://localhost:3000/restaurants');
-        }
-    }
-    ```
-
-14. Inject the api service in the `app.component.ts`
+10. Inject the api service in the `app.component.ts`
 
     ```ts
     export class AppComponent {
@@ -1467,7 +1466,7 @@ Branch: `workshop-4-start`
     }
     ```
 
-15. Use the `| async` pipe to display the data
+11. Use the `| async` pipe to display the data
 
     ```html
     <app-restaurant-list
@@ -1498,7 +1497,7 @@ class: text-center
 
 ---
 
-# Workshop #5
+# Workshop #5 / Custom pipes
 
 Custom pipes
 Branch: `workshop-5-start`
@@ -1533,6 +1532,10 @@ perform application tasks.
 - Projects components on router outlet
 
 ---
+title: Sandbox / Router
+layout: iframe
+url:
+---
 
 TODO Demo with stackblitz
 
@@ -1555,8 +1558,6 @@ TODO
 # Workshop #6
 
 Add routing (List, Detail, Create)
-
-TODO  
 
 <Scroller>
 
@@ -1725,3 +1726,391 @@ TODO
    
 
 </Scroller>
+
+---
+layout: cover
+background: https://source.unsplash.com/collection/8807226/1920x1080
+---
+
+# Day 2
+
+## Practical introduction to Angular
+ 
+---
+layout: center
+---
+
+# RxJS & Observables
+
+TODO
+
+---
+
+# Observables in Angular
+
+Provides support for passing messages between parts of your application
+
+Example:
+
+```ts
+// Create simple observable that emits three values
+const myObservable = of(1, 2, 3);
+
+// Execute with the observer object
+myObservable.subscribe({
+  next: (x: number) => console.log('Observer got a next value: ' + x),
+  error: (err: Error) => console.error('Observer got an error: ' + err),
+  complete: () => console.log('Observer got a complete notification'),
+});
+
+// Logs:
+// Observer got a next value: 1
+// Observer got a next value: 2
+// Observer got a next value: 3
+// Observer got a complete notification
+```
+
+
+
+---
+
+# Workshop #7 / Router loader
+
+Use `Router.events` stream to indicate when the router is loading data.
+
+<div class="grid grid-cols-2 gap-4">
+
+1. Inject `Router` service in app.component.ts
+2. `filter()` the router events stream to only emit the `NavigationStart` & `NavigationEnd` events
+3. `map()` the `NavigationStart` & `NavigationEnd` events to `true` & `false` values.
+4. Subscribe to the loading stream and set `isLoading` property.
+5. Use the `isLoading` property in the `app.component.html` to indicate a loading state
+
+
+```ts
+@Component({ 
+    template: `
+        <output *ngIf="isLoading">Loading...</output>
+        ...
+    `
+})
+export class AppComponent implements OnInit {
+    isLoading = false;
+
+    constructor(private router: Router) { }
+
+    ngOnInit() {
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationStart || event instanceof NavigationEnd),
+            map(event => event instanceof NavigationStart ? true : false)
+        ).subscribe(isLoading => {
+            this.isLoading = isLoading;
+        })
+    }
+}
+```
+
+</div>
+
+
+---
+layout: center
+class: text-center
+hideInToc: true
+---
+
+# 15 minute break
+
+<Countdown seconds="900" />
+
+---
+layout: center
+---
+
+
+# Forms
+
+---
+hideInToc: true
+---
+
+# @angular/forms
+
+Provides two different modules to handle user input.
+
+- Template-driven `FormsModule`
+    - Useful for simple forms
+    - Harder to implement complex behavior  
+    (form arrays, debouncing remote verification, etc.)
+- Reactive `ReactiveFormsModule`
+    - Scalable, reusable & testable
+    - Easier to manage when implementing complex behavior  
+    (e.g. validation by multiple criteria, debouncing, remote verification, etc.)
+
+---
+
+# Template-driven forms
+
+
+<Scroller>
+
+<div class="grid grid-cols-2 gap-4">
+
+<div> 
+
+- `[(ngModel)]` directive
+- Validators are added via attributes  
+    (`required`, `min`, `maxlength`) 
+</div>
+<div>
+
+```ts
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+    imports: [ ..., FormsModule ]
+})
+export class AppModule {}
+```
+
+</div>
+
+</div>
+
+Usage:
+
+```ts
+@Component(`
+    template: `
+        <form (ngSubmit)="onSubmit()">
+            <input type="text" [(ngModel)]="name" />
+            <input type="checkbox" [(ngModel)]="surname" />
+        </form>
+    `
+`)
+export class SomeComponent {
+    name = ''; 
+    surname = ''; 
+}
+```
+
+</Scroller>
+
+---
+title: Sandbox / Template-driven forms
+layout: iframe
+url: https://stackblitz.com/edit/angular-ivy-q58ox2?file=src/app/app.module.ts
+---
+
+---
+
+# Reactive Forms
+
+<Scroller>
+
+<div class="grid grid-cols-2 gap-4">
+
+<div> 
+
+- `FormBuilder` service
+- `[formGroup]`, `[formGroupName]`  
+  `[formControl]`, `[formControlName]`  
+  `[formArray]`, `[formArrayName]`
+</div>
+<div>
+
+```ts
+import { ReactiveFormsModule } from '@angular/forms';
+
+@NgModule({
+    imports: [ ..., ReactiveFormsModule ]
+})
+export class AppModule {}
+```
+
+</div>
+
+</div>
+
+Usage:
+
+```ts
+import { FormBuilder } from '@angular/forms';
+
+@Component(`
+    template: `
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <input type="text" formControlName="name" />
+            <input type="checkbox" [formControl]="acceptTermsAndConditions" />
+        </form>
+    `
+`)
+export class SomeComponent {
+    form = this.fb.group({
+        name: ''
+    });
+    
+    acceptTermsAndConditions = new FormControl(false);
+
+    constructor(private fb: FormBuilder) {}
+
+    onSubmit() { ... }
+}
+```
+
+</Scroller>
+
+---
+title: Sandbox / Reactive forms
+layout: iframe
+url: https://stackblitz.com/edit/angular-ivy-febwg1?file=src/app/app.module.ts
+---
+ 
+---
+
+# Reactive vs Template-driven forms
+
+Validators
+
+<div class="grid grid-cols-2 gap-4">
+
+```ts
+@Component({
+    template: `
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <input type="text" formControlName="name" />
+            {{ form.controls.name.errors?.required ? 'Required' : '' }}
+        </form>
+    `
+})
+export class ReactiveFormsComponent {
+    form = this.fb.group({
+        name: ['', Validators.required]
+    });
+
+    constructor(private fb: FormBuilder) {}
+}
+```
+
+```ts
+@Component({
+    template: `
+        <form (ngSubmit)="onSubmit()">
+            <input #modelRef="ngModel" type="text" [(ngModel)]="name" required />
+            {{ modelRef.errors?.required ? 'Required' : '' }}
+        </form>
+    `
+})
+export class TemplateFormsComponent {
+    name = '';
+}
+```
+
+</div>
+
+---
+hideInToc: true
+---
+
+# Reactive vs Template-driven forms
+
+Summary
+
+|                     | **Reactive**                              | **Template-driven**                  |
+| ------------------- | ----------------------------------------- | ------------------------------------ |
+| **Setup**           | More explicit, created in component class | Less explicit, created by directives |
+| **Data model**      | Structured                                | Unstructured                         |
+| **Form validation** | Functions (Validators.min\|max\|required) | Directives ([min], [required])       |
+| **Mutability**      | Immutable                                 | Mutable                              |
+
+---
+
+# Workshop #8 / Restaurant creation form
+
+Use Reactive Forms to implement a form for restaurant creation.
+
+TODO
+
+---
+layout: center
+---
+
+# HttpClientModule
+TODO
+
+---
+
+# @angular/common/http
+
+Exposes the `HttpClient` service for sending HTTP (GET, POST, PUT, PATCH, DELETE) requests
+
+Usage:
+
+<div class="grid grid-cols-2 gap-4">
+
+```ts
+import { HttpClientModule } from '@angular/common/http';
+
+@NgModule({
+    imports: [ ..., HttpClientModule ]
+})
+export class AppModule {}
+```
+
+```ts
+import { OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+    template: `
+        <h2 *ngIf="user$ | async as user; else loadingRef">
+            {{ user.name }}
+        </h2>
+        <ng-template #loadingRef>
+            Loading...
+        </ng-template>
+    `
+})
+export class AppComponent implements OnInit {
+    user$: Observable<string[]> = this.http.get('/api/user');
+
+    constructor(private http: HttpClient) {}
+}
+```
+
+</div>
+
+---
+
+# Workshop #9
+
+Add ability to delete a restaurant from the restaurant details page.
+
+TODO
+
+---
+
+
+# Dependency injection
+
+TODO
+
+---
+
+# Hierarchical Dependency Injectors
+
+TODO
+
+---
+
+# Testing
+
+TODO
+
+---
+
+# Workshop #10
+
+Add tests for the restaurant card service.
+
+TODO
