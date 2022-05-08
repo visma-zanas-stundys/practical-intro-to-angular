@@ -10,7 +10,7 @@
         <path
           ref="time"
           class="base-timer-path-remaining"
-          :class="{ active: !!this.timer }"
+          :class="{ active: !!timer }"
           d="
           M 50, 50
           m -45, 0
