@@ -673,6 +673,7 @@ hideInToc: true
 title: Sandbox / Template syntax
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-lqd9ao?file=src/app/app.component.html
+preload: false
 ---
 
 ---
@@ -846,6 +847,7 @@ hideInToc: true
 title: Sandbox / Property & Method decorators
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-ncwwfc?file=src/app/fruit.component.ts
+preload: false
 ---
 
 ---
@@ -1253,6 +1255,8 @@ export class AppComponent {}
 Read more: https://angular.io/guide/view-encapsulation
 
 ---
+preload: false
+---
 
 # Content projection
 
@@ -1296,6 +1300,7 @@ When Angular updates the HTML of the component
 title: Sandbox / Change detection
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-ynf7t9?file=src%2Fapp%2Fcountdown%2Fcountdown.component.ts
+preload: false
 ---
 
 
@@ -1411,6 +1416,7 @@ More about Observables [here](https://www.youtube.com/watch?v=65Us8NwmYf4)
 title: Sandbox / Service class demo
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-7qn8cb?file=src/app/app.component.ts
+preload: false
 ---
 
 ---
@@ -1523,41 +1529,132 @@ class: text-center
 
 # RouterModule
 
-TODO
-
 The Angular Router enables navigation from one view to the next as users
 perform application tasks.
+
+<div class="grid grid-cols-2 gap-4">
+
+<div>
+
 - Part of @angular/router package
 - Configured within RouterModule
 - Projects components on router outlet
 
+```ts
+import { Routes, RouterModule } from '@angular/router';
+
+const routes: Routes = [
+    { path: '', component: HomeComponent },
+    { path: 'restaurants', component: RestaurantListComponent, resolve: { restaurants: RestaurantsResolver } },
+    { path: 'settings', canActivate: [AdminGuard], loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) },
+    { path: '**', redirectTo: '' }
+];
+
+@NgModule({
+    imports: [RouterModule.forRoot(routes)],
+})
+export class AppModule {}
+```
+
+</div>
+
+```html
+<!-- Use [routerLink] to add links to other routes -->
+<!-- Use [routerLinkActive] to apply a class for the route link that is active -->
+<a routerLinkActive="bold" routerLink="" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+<a routerLinkActive="bold" routerLink="restaurants">Restaurants</a>
+<a routerLinkActive="bold" routerLink="settings">Settings</a>
+
+<router-outlet></router-outlet>
+<!-- Component for matched route will be rendered here  -->
+```
+
+
+</div>
+
+---
+
+# Router Guards
+
+- `CanActivate`, `CanDeactivate`, `CanActivateChild`, `canLoad`, `Resolve`
+
+<Scroller>
+
+<div class="grid grid-cols-2 gap-4">
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class AdminGuard implements CanActivate {
+    constructor(private authService: AuthService, private router: Router) {}
+
+    canActivate(route: ActivatedRouteSnapshot): UrlTree | boolean {
+        return this.authService.isAdmin()
+            ? true
+            : this.router.createUrlTree(['/login']);
+    }
+}
+
+// Usage in route definition
+
+{
+    path: 'admin',
+    component: AdminPageComponent,
+    canActivate: [AdminGuard, ...]
+}
+```
+
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class UserResolver implements Resolve<User> {
+    constructor(private authService: AuthService) {}
+
+    resolve(route: ActivatedRouteSnapshot): Observable<User> {
+        return this.authService.getUserData()
+    }
+}
+// Route definition
+{
+    path: 'user',
+    component: UserPageComponent,
+    resolve: { user: UserResolver }
+}
+// user-page.component.ts
+@Component({
+    template: `
+        {{ route.data | async | json }}
+        {{ route.snapshot.data | json }}
+    `
+})
+export class UserPageComponent {
+    constructor(public route: ActivatedRoute) {}
+}
+```
+
+</div>
+
+</Scroller>
+
+Read more: https://angular.io/guide/router
+
 ---
 title: Sandbox / Router
 layout: iframe
-url:
+url: https://stackblitz.com/edit/angular-ivy-u5tj8v?file=src/app/app.module.ts
+preload: false
 ---
-
-TODO Demo with stackblitz
 
 ---
 
 # Things to know about routing
-
-TODO
-
-- Configuration
-- Router outlet
-- Router links
-- Active router links
-- ActivatedRoute state
-- Router events
-- Guards, Resolvers
+ 
 
 ---
 
 # Workshop #6
 
-Add routing (List, Detail, Create)
+Add routing (List, Detail, Create)  
+Branch: `workshop-6-start`
 
 <Scroller>
 
@@ -1738,45 +1835,151 @@ background: https://source.unsplash.com/collection/8807226/1920x1080
  
 ---
 layout: center
+class: text-center
 ---
 
 # RxJS & Observables
 
-TODO
+<img src="https://rxjs.dev/generated/images/marketing/home/Rx_Logo-512-512.png" style="width: 200px; margin: 2rem auto;" >
 
 ---
 
 # Observables in Angular
 
-Provides support for passing messages between parts of your application
+Provides tools to handle asynchronous logic of your application.
 
 Example:
 
 ```ts
 // Create simple observable that emits three values
-const myObservable = of(1, 2, 3);
+const ticker$ = interval(1000).pipe(take(3));
 
 // Execute with the observer object
-myObservable.subscribe({
+ticker$.subscribe({
   next: (x: number) => console.log('Observer got a next value: ' + x),
   error: (err: Error) => console.error('Observer got an error: ' + err),
   complete: () => console.log('Observer got a complete notification'),
 });
 
 // Logs:
-// Observer got a next value: 1
-// Observer got a next value: 2
-// Observer got a next value: 3
+// Observer got a next value: 1 after 1 s
+// Observer got a next value: 2 after 1 s 
+// Observer got a next value: 3 after 1 s
 // Observer got a complete notification
 ```
 
+---
+
+# Observable operators with .pipe()
+
+Examples of most common RxJS usage in Angular
+
+<Scroller>
+
+Handling errors in HTTP requests
+
+```ts
+this.httpClient.get('/api/users').pipe(
+    catchError((response: HttpErrorResponse) => {
+        alert('Something went wrong');
+        return NEVER; // or of([]) to provide some fallback data to the subscriber
+    })
+)
+```
+
+Handling nested HTTP requests
+
+```ts
+const adminPostsWithComments$ = this.httpClient.get('/api/user').pipe(
+    // After user is loaded, filter the stream to admin users
+    filter(user => user.isAdmin),
+    // After admin is loaded, load its posts
+    switchMap((user) => this.httpClient.get(`/api/posts/user/${user.id}`))
+    // After the posts are loaded, filter only those with comments
+    map(posts => posts.filter(post => post.comments.length > 0))
+)
+```
+
+Debouncing value changes in forms
+
+```ts
+const searchResults$ = this.form.get('search').valueChanges.pipe(
+    debounceTime(500), // wait for 500 seconds before processing the request
+    distinctUntilChanged(), // only emit if value has changed    
+    switchMap(term => { // call the API service each time the search term changes
+        this.isSearching = true;
+        return this.searchService.searchForUser(term).pipe(
+            finalize(() => this.isSearching = false) // Hide loader if search succeeds or fails
+        )
+    }),
+);
+```
+
+</Scroller>
+
+---
+
+
+# Preventing memory leaks
+
+Some subscriptions stay running even when the component it is destroyed.
+
+Unsubscription strategies:
+
+<div class="grid grid-cols-2 gap-4">
+
+- `data$ | async`
+- `Subscription.unsubscribe()`
+- `takeUntil()`
+
+<Scroller>
+
+```ts
+@Component({
+    template: `
+        {{ asyncData$ | async }}
+    `
+})
+export class MyComponent implements OnInit, OnDestroy {
+    asyncData$ = interval(1000); // #1
+    private subscription: Subscription; // #2
+    private destroy$ = new Subject(); // #3
+
+    ngOnInit() {
+         // #2
+        this.subscription = interval(1000).subscribe(
+            (secondsPassed) => console.log(secondsPassed)
+        );
+
+        // #3
+        interval(1000).pipe(takeUntil(this.destroy$)).subscribe(
+            (secondsPassed) => console.log(secondsPassed)
+        );
+    }
+
+    ngOnDestroyed() {
+         // #2
+        this.subscription.unsubscribe();
+
+        // #3
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+}
+```
+
+</Scroller>
+
+</div>
 
 
 ---
 
 # Workshop #7 / Router loader
 
-Use `Router.events` stream to indicate when the router is loading data.
+Use `Router.events` stream to indicate when the router is loading data.  
+Branch: `workshop-7-start`
+
 
 <div class="grid grid-cols-2 gap-4">
 
@@ -1900,6 +2103,7 @@ export class SomeComponent {
 title: Sandbox / Template-driven forms
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-q58ox2?file=src/app/app.module.ts
+preload: false
 ---
 
 ---
@@ -1964,6 +2168,7 @@ export class SomeComponent {
 title: Sandbox / Reactive forms
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-febwg1?file=src/app/app.module.ts
+preload: false
 ---
  
 ---
@@ -2027,16 +2232,191 @@ Summary
 
 # Workshop #8 / Restaurant creation form
 
-Use Reactive Forms to implement a form for restaurant creation.
+Use Reactive Forms to implement a form for restaurant creation.  
+Branch: `workshop-8-start`
 
-TODO
+<Scroller>
+
+1. Import `ReactiveFormsModule` into the module that has `EditRestaurantPageComponent` in the `declarations[]`
+2. Inject `FormBuilder` service into the `EditRestaurantPageComponent` and use `FormBuilder.group()` to create a form containing fields contained in the `Restaurant` entity
+    ```ts
+    constructor(private fb: FormBuilder) { }
+
+    ngOnInit() {
+        this.form = this.fb.group({
+            name: ['', Validators.required],
+            description: [''],
+             // integerValidator covered in next step
+            rating: ['', [Validators.min(0), Validators.max(0), integerValidator] ],
+            ...
+        })
+    }
+
+    onSubmit() {
+        console.log('TODO', this.form.value);
+    }
+    ```
+3. Write a custom validator named `integerValidator` that checks if the value is an integer.
+
+    ```ts
+    const integerValidator: ValidatorFn = (control) => {
+        const value = control.value;
+
+        if (typeof value !== 'number') {
+            return null; // No errors
+        }
+
+        if (value % 1 === 0) {
+            return null; // No errors
+        }
+
+        return {
+            integer: true // Report an integer error
+        };
+    }
+    ```
+
+4. Bind the newly created `form` using `[formGroup]` directive  
+    use `formControlName` directive to bind input elements to the `form`:
+    ```html
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        ...
+        <input formControlName="name" type="text" />
+        <input formControlName="rating" type="number" />
+        <textarea formControlName="description"></textarea>
+        ...
+
+        <button [disabled]="form.invalid" type="submit">Submit</button>
+    </form>
+    ```
+5. Show error messages under the field if it is not valid
+    ```html
+    <input ... [class.has-errors]="form.controls.name.touched && form.controls.name.invalid" />
+    {{ form.controls.name.touched && form.controls.name.errors?.required ? 'Required' : '' }}
+    <!-- Use json pipe for debugging -->
+    {{ form.value | json }} 
+    <!-- Optional. Write a custom pipe to make the template shorter -->
+    <input ... [class.has-errors]="form.controls.name | validation">
+    {{ form.controls.name | validation }}
+    ```
+
+    ```ts
+    import { Pipe, PipeTransform } from '@angular/core';
+    import { AbstractControl } from '@angular/forms';
+
+    @Pipe({ name: 'validation', pure: false })
+    export class ValidationPipe implements PipeTransform {
+        transform(value: AbstractControl): string {
+            if (value.untouched || !value.errors) {
+                return '';
+            }
+
+            if (value.errors.required) {
+                return 'Required';
+            } else if (value.errors.min) {
+                return 'Minimum value is ' + value.errors.min.min;
+            } else if (value.errors.max) {
+                return 'Maximum value is ' + value.errors.max.max;
+            }
+
+            return 'Invalid';
+        }
+    }
+    ```
+
+6. Submit the form when it is valid and the user submits the form `(ngSubmit)` event on the `[formGroup]` element
+    ```ts
+    // restaurant-api.service.ts
+    create(formValue: Omit<Restaurant, 'id'>) {
+        return this.httpClient.post<Restaurant>('http://localhost:3000/restaurants', formValue);
+    }
+    
+    // edit-restaurant-page.component.ts
+    export class EditRestaurantPageComponent {
+        constructor(private router: Router, private route: ActivatedRoute) {}
+
+        onSubmit() {
+            this.isLoading = true;
+
+            this.apiService.create(this.form.value).subscribe({
+                next: (response) => {
+                    // Opens the newly created restaurant detail page
+                    // Relative paths are used thanks to with `relativeTo`
+                    // Absolute paths can also be used: ['/restaurant', response.id]
+                    this.router.navigate(['..', response.id], { relativeTo: this.route });
+                },
+                error: () => {
+                    this.isLoading = false;
+                    alert('Something went wrong');
+                },
+            });
+        }
+    }
+    ```
+7. Let's re-use the `EditRestaurantPage` component for editing a restaurant
+    ```ts
+    // Restaurants module route definitions
+    const routes: Routes = [
+        ...,
+        {
+            path: ':id/edit',
+            component: EditRestaurantPageComponent,
+            resolve: {
+                restaurant: RestaurantResolver
+            }
+        }
+    ];
+    ```
+
+    Patch the form with loaded restaurant data
+
+    ```ts
+    // edit-restaurant-page.component.ts
+    constructor(..., private route: ActivatedRoute) {}
+
+    ngOnInit() {
+        this.route.data.subscribe(({ restaurant }) => {
+            if (restaurant) {
+                this.form.patchValue(restaurant);
+            }
+        });
+    }
+
+    onSubmit() {
+        const isEditing = this.form.value.id !== undefined;
+        const request$ = isEditing
+            ? this.apiService.update(this.form.value)
+            : this.apiService.create(this.form.value);
+
+        request$.subscribe({
+            next: (response) => {
+                this.router.navigate(['/restaurants', response.id]);
+            },
+            error: () => {
+                this.isLoading = false;
+                alert('Something went wrong');
+            },
+        });
+    }
+    ```
+
+    Add the `update()` method to the api service
+
+    ```ts
+    // restaurant-api.service.ts
+    update(formValue: Restaurant) {
+        return this.httpClient.put<Restaurant>(`http://localhost:3000/restaurants/${formValue.id}`, formValue);
+    }
+    ```
+
+
+</Scroller>
 
 ---
 layout: center
 ---
 
-# HttpClientModule
-TODO
+# HttpClientModule 
 
 ---
 
@@ -2081,25 +2461,419 @@ export class AppComponent implements OnInit {
 </div>
 
 ---
+hideInToc: true
+---
+
+# HTTP Interceptors
+
+Secret power of HttpClientModule is the ability to intercept requests and responses.
+
+<Scroller>
+
+```ts
+import { HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor.ts';
+import { ErrorInterceptor } from './interceptors/error.interceptor.ts';
+
+@NgModule({
+    imports: [HttpClientModule],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, multi: true, useClass: AuthInterceptor },
+        { provide: HTTP_INTERCEPTORS, multi: true, useClass: ErrorInterceptor }
+    ]
+})
+export class AppModule {}
+```
+
+Interceptor to add authorization header to requests
+
+```ts
+import { HttpInterceptor } from '@angular/common/http';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+    constructor(private authService: AuthService) {}
+    
+    // Shows an error message in the UI if the request fails
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        const requestWithAuthToken = req.clone({
+            headers: req.headers.set('Authorization', 'Bearer ' + this.authService.getUserToken())
+        });
+        
+        return next.handle(requestWithAuthToken);
+    }
+}
+```
+
+Interceptor that shows an error message in the UI if the request that modifies the database fails
+
+```ts
+import { HttpInterceptor } from '@angular/common/http';
+
+@Injectable()
+export class ErrorInterceptor implements HttpInterceptor {
+    constructor(private alertService: AlertService) {}
+
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        return next.handle(req).pipe(catchError(response => {
+            if (req.method !== 'GET') {
+                // POST, PUT, PATCH, DELETE
+                this.alertService.error(response.statusText);
+            }
+
+            return throwError(response); // Rethrow error to the caller
+        }));
+    }
+}
+```
+</Scroller>
+
+---
 
 # Workshop #9
 
 Add ability to delete a restaurant from the restaurant details page.
+Create an interceptor that would ask for confirmation regarding any DELETE requests.  
+Branch: `workshop-9-start`
 
-TODO
+<Scroller>
+
+1. Add a delete button in the restaurant detail page
+2. Send a DELETE request via the `RestaurantApiService` service
+    ```ts
+    delete(id: Restaurant['id']) {
+        return this.httpClient.delete(`http://localhost:3000/restaurants/${id}`);
+    }
+    ```
+3. When user clicks the button this request should be sent to the server
+    ```ts
+     onDeleteClick(restaurantId: Restaurant['id']) {
+        this.isDeleting = true;
+
+        this.apiService.delete(restaurantId).subscribe({
+            next: () => {
+                this.router.navigate(['..'], { relativeTo: this.route });
+            },
+            error: () => {
+                this.isDeleting = false;
+            },
+            complete: () => {
+                this.isDeleting = false;
+            },
+        });
+    }
+    ```
+
+4. Create a custom interceptor class `DeleteConfirmationInterceptor` by implementing the `HttpInterceptor` interface
+    ```ts
+    import { Injectable } from '@angular/core';
+    import { HttpInterceptor } from '@angular/common/http';
+
+    // interceptors/delete-confirmation.interceptor.ts
+    @Injectable()
+    export class DeleteConfirmationInterceptor implements HttpInterceptor {
+        intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+            if (req.method !== 'DELETE') {
+                // Leave the request untouched
+                return next.handle(req);
+            }
+
+            const confirmation = confirm('Are you sure you want to delete?');
+
+            if (!confirmation) {
+                return EMPTY; // Abort the request
+            }
+
+            return next.handle(req).pipe(
+                tap((response) => {
+                    if (response instanceof HttpResponse) {
+                        alert('Item deleted');
+                    }
+                })
+            );
+        }
+    }
+
+    // app.module.ts
+    import { DeleteConfirmationInterceptor } from './interceptors/delete-confirmation.interceptor';
+    import { HTTP_INTERCEPTORS } from '@angular/common/http';
+    
+    @NgModule({
+        imports: [HttpClientModule, ...],
+        providers: [
+            {
+                provide: HTTP_INTERCEPTORS,
+                multi: true,
+                useClass: DeleteConfirmationInterceptor
+            }
+        ]
+    })
+    export class AppModule {}
+    ```
+
+</Scroller>
+
+---
+layout: center
+---
+
+# Dependency injection
+ 
+---
+hideInToc: true
+---
+
+# Dependency injection
+
+Defining feature of Angular
+
+- Allows logic to be contained into distinct, single-purpose classes, making the code easier to test & maintain.
+
+<Scroller>
+<div class="grid grid-cols-2 gap-4">
+
+```ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({ providedIn: 'root' })
+export class HeroService {
+    constructor(
+        // Inject other dependencies here
+        // E.g. HttpClient service that HttpClientModule provides
+        private httpClient: HttpClient
+    ) {}
+    
+    getHeroes(): Observable<Hero[]> {
+        return this.httpClient.get<Hero[]>('/api/heroes');
+    }
+
+    ...
+}
+```
+
+```ts
+@Component({ ... })
+export class HeroListComponent {
+    heroes$ = this.apiService.getHeroes();
+
+    constructor(
+        private apiService: HeroService,
+        private confirmService: ConfirmService,
+        private alertService: AlertService
+    ) {}
+
+    onDeleteClick(hero) {
+        this.confirmService.askForConfirmation().pipe(
+            filter(saidYes => saidYes === true),
+            switchMap(() => this.apiService.deleteHero(hero))
+        ).subscribe({
+            next: () => this.alertService.showSuccessMessage(),
+            error: (response) => this.alertService.showErrorMessage(response)
+        })
+    }
+}
+```
+
+
+</div>
+</Scroller>
 
 ---
 
 
-# Dependency injection
+# Hierarchical Dependency Injectors
 
-TODO
+The Angular dependency injection system is hierarchical. There is a tree of
+injectors that parallels an app's component tree. You can reconfigure the
+injectors at any level of that component tree.
 
+
+```mermaid
+graph BT
+A --> AM(AppModule) 
+B(ProductsListComponent) --> A(AppComponent) 
+B1(ProductComponent) --> B
+B2(ProductComponent) --> B
+C(CartComponent) --> A
+
+```
+
+---
+hideInToc: true
 ---
 
 # Hierarchical Dependency Injectors
 
-TODO
+
+- @Injectable-level configuration 
+- @NgModule-level injectors
+- @Component-level injectors
+    ```ts
+    @Component({ providers: [AnalyticsService] })
+    export class PaymentComponent implements OnInit, OnDestroy {
+        private tracker = this.analyticsService.track('Payment');
+
+        constructor(private analyticsService: AnalyticsService) {}
+
+        ngOnInit() {
+            this.tracker.start();
+        }
+
+        ngOnDestroy() {
+            this.tracker.stop();
+        }
+    }
+    ```
+
+Read more: https://angular.io/guide/dependency-injection-in-action
+
+---
+
+# @Injectable-level configuration
+
+<div class="grid grid-cols-1 gap-4">
+
+```ts
+import { Injectable } from '@angular/core'
+
+// Will be available globally - only a single instance of AnalyticsService will be created and injected
+@Injectable({ providedIn: 'root' })
+export class HeroService {}
+```
+
+
+```ts
+import { Injectable } from '@angular/core'
+
+// HeroService can be injected in modules that will import HeroModule
+@Injectable({ providedIn: HeroModule })
+export class HeroService {} 
+```
+
+```ts
+import { Injectable } from '@angular/core'
+
+// HeroService can be injected in modules/components that have this service in providers[]
+@Injectable()
+export class HeroService {} 
+```
+
+</div>
+
+Read more: https://angular.io/guide/dependency-injection-in-action
+
+---
+
+# @NgModule-level injectors
+
+```ts
+const APPLICATION_TITLE = new InjectionToken<string>('APP_TITLE');
+
+@NgModule({
+    providers: [
+        HeroService, // If HeroService is not provided anywhere, e.g.: @Injectable()
+        {
+            provide: APPLICATION_TITLE, // Usage: @Inject(APPLICATION_TITLE) private appTitle: string
+            useValue: 'iPuodas'
+        },
+    ]
+})
+export class AppModule {}
+```
+
+Read more: https://angular.io/guide/dependency-injection-in-action
+
+---
+
+# @Component-level injectors
+
+```ts
+import { Component } from '@angular/core';
+import { HeroService } from './hero.service';
+
+@Component({
+    selector: 'app-heroes',
+    providers: [ RandomEmojiService, { provide: RANDOM_EMOJI_BUCKET, useValue: [ '✨', '🐻', '🚀' ] } ]
+})
+export class EmojiListComponent {
+    randomEmoji = this.randomEmojiService.getRandomEmoji();
+
+    constructor(private randomEmojiService: RandomEmojiService) {}
+}
+```
+
+Read more: https://angular.io/guide/dependency-injection-in-action
+
+---
+
+# Workshop #10
+
+<Scroller>
+
+- Restaurant detail page
+  - Add a Like/Dislike button in the restaurant detail page  
+      <img src="/sketches/like-dislike-component.svg" width="260">
+  - Likes/Dislikes should be stored in a dedicated service
+  - Likes/Dislikes should persist if the user reloads the website (use localStorage)
+    ```ts
+    @Injectable({ providedIn: 'root' })
+    export class LikeDislikeService {
+        private likedRestaurantIds: Record<Restaurant['id'], boolean> = {};
+
+        constructor() {
+            const likedRestaurantIds = localStorage.getItem('likedRestaurantIds');
+
+            if (likedRestaurantIds) {
+                this.likedRestaurantIds = JSON.parse(likedRestaurantIds);
+            }
+        }
+
+        isLiked(restaurant: Restaurant): boolean {
+            return this.likedRestaurantIds[restaurant.id] === true;
+        }
+
+        isDisliked(restaurant: Restaurant): boolean {
+            return this.likedRestaurantIds[restaurant.id] === false;
+        }
+
+        like(restaurant: Restaurant): void {
+            this.likedRestaurantIds[restaurant.id] = true;
+            localStorage.setItem('likedRestaurantIds', JSON.stringify(this.likedRestaurantIds));
+        }
+
+        dislike(restaurant: Restaurant): void {
+            this.likedRestaurantIds[restaurant.id] = false;
+            localStorage.setItem('likedRestaurantIds', JSON.stringify(this.likedRestaurantIds));
+        }
+    }
+    ```
+- Restaurant list page
+  - Liked/Disliked state should be shown in the list
+  - Should be possible to filter the list to show only liked restaurants:
+    ```html
+    <!-- restaurants-page.component.html -->
+    <button (click)="showOnlyLiked = true">Show only liked</button>
+    <button (click)="showOnlyLiked = false">Show all</button>
+
+    <app-restaurant-list
+        *ngIf="restaurants$ | async as restaurants; else loadingRef"
+        [restaurants]="showOnlyLiked ? (restaurants | filterLiked) : restaurants"
+    ></app-restaurant-list>
+    ```
+
+    ```ts
+    @Pipe({ name: 'filterLiked' })
+    export class FilterLikedPipe implements PipeTransform {
+        constructor(private likeDislikeService: LikeDislikeService) {}
+
+        transform(restaurants: Restaurant[]): Restaurant[] {
+            return restaurants.filter(restaurant => this.likeDislikeService.isLiked(restaurant));
+        }
+    }
+    ```
+
+</Scroller>
 
 ---
 
@@ -2109,7 +2883,7 @@ TODO
 
 ---
 
-# Workshop #10
+# Workshop #11
 
 Add tests for the restaurant card service.
 
