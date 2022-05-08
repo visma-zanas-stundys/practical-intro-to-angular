@@ -1,13 +1,15 @@
 ---
-theme: default
+theme: ./theme
 background: https://source.unsplash.com/collection/8807226/1920x1080
 highlighter: shiki
 hideInToc: true
+title: Day 1
 ---
 
 # Day 1
 
 ## Practical introduction to Angular
+
 
 ---
 hideInToc: true
