@@ -674,6 +674,7 @@ title: Sandbox / Template syntax
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-lqd9ao?file=src/app/app.component.html
 preload: false
+hideInToc: true
 ---
 
 ---
@@ -848,6 +849,7 @@ title: Sandbox / Property & Method decorators
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-ncwwfc?file=src/app/fruit.component.ts
 preload: false
+hideInToc: true
 ---
 
 ---
@@ -1053,6 +1055,7 @@ title: Sandbox / Built-in directives
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-n2a9lv?embed=1&file=src/app/app.component.html
 preload: false
+hideInToc: true
 ---
 
 ---
@@ -1301,10 +1304,11 @@ title: Sandbox / Change detection
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-ynf7t9?file=src%2Fapp%2Fcountdown%2Fcountdown.component.ts
 preload: false
+hideInToc: true
 ---
 
 
---- 
+---
 
 # Pipes
 
@@ -1329,7 +1333,9 @@ Find out more on https://angular.io/guide/pipes
 
 <!-- Pipes are useful -->
 
---- 
+---
+hideInToc: true 
+---
 
 # Creating your own pipes
 
@@ -1363,6 +1369,8 @@ class: text-center
 
 # Services
 
+---
+hideInToc: true
 ---
 
 # Creating a service class
@@ -1417,6 +1425,7 @@ title: Sandbox / Service class demo
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-7qn8cb?file=src/app/app.component.ts
 preload: false
+hideInToc: true
 ---
 
 ---
@@ -1495,6 +1504,7 @@ Branch: `workshop-4-start`
 ---
 layout: center
 class: text-center
+hideInToc: true
 ---
 
 # 10 minute break
@@ -1525,6 +1535,8 @@ class: text-center
 
 # Routing & Navigation
 
+---
+hideInToc: true
 ---
 
 # RouterModule
@@ -1572,6 +1584,8 @@ export class AppModule {}
 
 </div>
 
+---
+hideInToc: true
 ---
 
 # Router Guards
@@ -1642,12 +1656,8 @@ title: Sandbox / Router
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-u5tj8v?file=src/app/app.module.ts
 preload: false
+hideInToc: true
 ---
-
----
-
-# Things to know about routing
- 
 
 ---
 
@@ -1843,6 +1853,8 @@ class: text-center
 <img src="https://rxjs.dev/generated/images/marketing/home/Rx_Logo-512-512.png" style="width: 200px; margin: 2rem auto;" >
 
 ---
+hideInToc: true
+---
 
 # Observables in Angular
 
@@ -1868,6 +1880,8 @@ ticker$.subscribe({
 // Observer got a complete notification
 ```
 
+---
+hideInToc: true
 ---
 
 # Observable operators with .pipe()
@@ -1918,7 +1932,8 @@ const searchResults$ = this.form.get('search').valueChanges.pipe(
 </Scroller>
 
 ---
-
+hideInToc: true
+---
 
 # Preventing memory leaks
 
@@ -2051,6 +2066,8 @@ Provides two different modules to handle user input.
     (e.g. validation by multiple criteria, debouncing, remote verification, etc.)
 
 ---
+hideInToc: true
+---
 
 # Template-driven forms
 
@@ -2104,8 +2121,11 @@ title: Sandbox / Template-driven forms
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-q58ox2?file=src/app/app.module.ts
 preload: false
+hideInToc: true
 ---
 
+---
+hideInToc: true
 ---
 
 # Reactive Forms
@@ -2169,8 +2189,11 @@ title: Sandbox / Reactive forms
 layout: iframe
 url: https://stackblitz.com/edit/angular-ivy-febwg1?file=src/app/app.module.ts
 preload: false
+hideInToc: true
 ---
  
+---
+hideInToc: true
 ---
 
 # Reactive vs Template-driven forms
@@ -2414,10 +2437,22 @@ Branch: `workshop-8-start`
 
 ---
 layout: center
+class: text-center
+hideInToc: true
+---
+
+# 15 minute break
+
+<Countdown seconds="900" />
+
+---
+layout: center
 ---
 
 # HttpClientModule 
 
+---
+hideInToc: true
 ---
 
 # @angular/common/http
@@ -2615,6 +2650,17 @@ Branch: `workshop-9-start`
 
 ---
 layout: center
+class: text-center
+hideInToc: true
+---
+
+# 15 minute break
+
+<Countdown seconds="900" />
+
+
+---
+layout: center
 ---
 
 # Dependency injection
@@ -2680,7 +2726,8 @@ export class HeroListComponent {
 </Scroller>
 
 ---
-
+hideInToc: true
+---
 
 # Hierarchical Dependency Injectors
 
@@ -2729,6 +2776,8 @@ hideInToc: true
 Read more: https://angular.io/guide/dependency-injection-in-action
 
 ---
+hideInToc: true
+---
 
 # @Injectable-level configuration
 
@@ -2764,6 +2813,8 @@ export class HeroService {}
 Read more: https://angular.io/guide/dependency-injection-in-action
 
 ---
+hideInToc: true
+---
 
 # @NgModule-level injectors
 
@@ -2784,6 +2835,8 @@ export class AppModule {}
 
 Read more: https://angular.io/guide/dependency-injection-in-action
 
+---
+hideInToc: true
 ---
 
 # @Component-level injectors
@@ -2808,6 +2861,9 @@ Read more: https://angular.io/guide/dependency-injection-in-action
 ---
 
 # Workshop #10
+
+Liked and disliked restaurants  
+Branch: `workshop-10-start`
 
 <Scroller>
 
@@ -2876,10 +2932,130 @@ Read more: https://angular.io/guide/dependency-injection-in-action
 </Scroller>
 
 ---
+layout: center
+class: text-center
+hideInToc: true
+---
+
+# 15 minute break
+
+<Countdown seconds="900" />
+
+---
+layout: center
+---
 
 # Testing
 
-TODO
+---
+hideInToc: true
+---
+
+# Types of tests
+
+<div class="grid grid-cols-2 gap-4">
+
+<div>
+
+- Unit tests
+  - Small tests that test a single piece of functionality (component, function, service, etc.)
+- Integration tests
+  - Higher level tests that test how different units work together as a whole
+- End-to-end tests
+  - Run in a browser and tests the whole application by interacting with the UI.
+
+</div>
+
+<div>
+    <img src="/images/test-types.png"  />
+</div>
+
+</div>
+
+
+---
+hideInToc: true
+---
+
+# Unit tests in Angular
+
+<div class="grid grid-cols-2 gap-4">
+
+<div>
+
+- Unit tests are fast and easy to write compared to integration tests or end-to-end tests
+- Becomes more important when working with teams / mid-sized projects who aim for coverage targets (80% coverage)
+- Common practices:
+  - Writing unit tests for code that's used in multiple places is more important
+  - Keep unit tests simple
+  - Read more: https://github.com/goldbergyoni/javascript-testing-best-practices
+
+
+</div>
+
+<div>
+
+
+```ts
+// Test suite
+describe('DegreesToFahrenheitPipe' () => {
+    // Test spec
+    it('should convert degrees to fahrenheit', () => {
+        // Arrange
+        const pipe = new DegreesToFahrenheitPipe();
+        // Act
+        const result = pipe.transform(100);
+        // Assert
+        expect(result).toBe(212);
+    })
+})
+
+```
+
+</div>
+
+</div>
+
+---
+hideInToc: true
+---
+
+# How would you cover each method with unit tests?
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class TodoService {
+  constructor(private http: HttpClient, private alertService: AlertService) {}
+
+  getCompletedTodos(todos: Todo[]): Todo[] {
+    return todos.filter((todo) => todo.completed);
+  }
+
+  getRandomTodoNumber(): number {
+    return Math.round(Math.random() * 5);
+  }
+
+  congratulateTodo(todo: Todo): void {
+    this.alertService.alert(`Congratulations, ${todo.title} is completed!`);
+  }
+
+  getTodos() {
+    return this.http
+      .get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
+      .pipe(map((response) => response.slice(0, 5)));
+  }
+}
+```
+
+https://angular.io/guide/testing
+
+---
+layout: iframe
+url: https://stackblitz.com/edit/angular-es2rnm?file=src/app/todo/todo-list.component.spec.ts
+preload: false
+title: Sandbox / Testing
+hideInToc: true
+---
 
 ---
 
@@ -2887,4 +3063,39 @@ TODO
 
 Add tests for the restaurant card service.
 
-TODO
+1. Cover `stars.pipe` with unit tests
+2. Cover any method of `restaurant-api.service` with unit tests
+3. Cover `restaurant-list.component` with unit tests
+
+---
+
+# Next steps
+
+Few paths to continue the Angular journey
+
+- [Angular Docs](https://angular.io/docs)
+- [Angular Material](https://material.angular.io/)
+- [RxJS Top ten - Code this, not that](https://www.youtube.com/watch?v=ewcoEYS85Co)
+- [Top 7 RxJS Concepts for Angular Developers](https://www.youtube.com/watch?v=65Us8NwmYf4)
+- [Angular Testing Quick start](https://www.youtube.com/watch?v=BumgayeUC08)
+- [State management with NgRx](https://fireship.io/lessons/angular-ngrx-redux-starter-guide/)
+
+---
+layout: center
+hideInToc: true
+---
+
+# Good luck and have fun!
+
+---
+layout: image-left
+image: https://source.unsplash.com/collection/8807226/1920x1080
+title: Closer
+hideInToc: true
+---
+
+- Respect
+- Reliability
+- Innovation
+- Competence
+- Team spirit
