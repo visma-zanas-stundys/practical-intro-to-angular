@@ -1,6 +1,7 @@
 ---
 theme: ./theme
-background: https://source.unsplash.com/collection/8807226/1920x1080
+background: /images/cover-start.gif
+background-position-x: 200%
 highlighter: shiki
 hideInToc: true
 title: Day 1
@@ -1195,9 +1196,10 @@ export class AppComponent implements OnChanges, OnInit, OnDestroy, ... {
 Use `*ngFor` directive to iterate over a collection of restaurants.  
 Branch: `workshop-3-start`
 
-<section class="grid grid-cols-[1fr,auto] gap-4">
+<Scroller>
 
-<div>
+<img style="width: 600px; margin: auto;" src="/sketches/workshop-3.svg">
+
 
 1. Create a `restaurant-list` component in the restaurants module.
 2. The `restaurant-list` should accept an array of restaurants:
@@ -1212,11 +1214,9 @@ Branch: `workshop-3-start`
 3. Use *ngFor directive to display the list of restaurants.
 4. Use *ngIf directive in `restaurant-card` component if a discount is in effect (-20%, "Free shipping", etc).
 
-</div>
 
-<img style="width: 400px" src="/sketches/workshop-3.svg">
+</Scroller>
 
-</section>
 
 ---
 layout: center
@@ -1838,7 +1838,8 @@ Branch: `workshop-6-start`
 
 ---
 layout: cover
-background: https://source.unsplash.com/collection/8807226/1920x1080
+background: /images/cover-start.gif
+background-position-x: 200%
 ---
 
 # Day 2
@@ -3090,9 +3091,10 @@ hideInToc: true
 # Good luck and have fun!
 
 ---
-layout: image-left
-image: https://source.unsplash.com/collection/8807226/1920x1080
-title: Closer
+layout: cover
+background: /images/cover-end.png
+title: Closing slide
+large: true
 hideInToc: true
 ---
 
@@ -3101,3 +3103,14 @@ hideInToc: true
 - Innovation
 - Competence
 - Team spirit
+
+<style>
+    .slidev-layout ul {
+        @apply text-2xl;
+        
+        color: var(--secondary-text-color);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+</style>
