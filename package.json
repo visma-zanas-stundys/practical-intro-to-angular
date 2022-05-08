@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "slidev build --base /practical-intro-to-angular/",
+    "build": "slidev build --base /practical-intro-to-angular/ && cp images/* dist/assets",
     "dev": "slidev --open",
     "export": "slidev export"
   },
