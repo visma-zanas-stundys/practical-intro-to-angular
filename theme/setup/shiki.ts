@@ -1,10 +1,14 @@
-import { defineShikiSetup } from '@slidev/types'
+import { defineShikiSetup } from "@slidev/types";
 
-export default defineShikiSetup(async({ loadTheme }) => {
+export default defineShikiSetup(async ({ loadTheme }) => {
   return {
     theme: {
-      dark: await loadTheme(require.resolve('theme-vitesse/themes/vitesse-dark.json')),
-      light: await loadTheme(require.resolve('theme-vitesse/themes/vitesse-light.json')),
+      dark: await loadTheme(
+        require.resolve("./shiki-themes/dracula-soft.json")
+      ),
+      light: await loadTheme(
+        require.resolve("./shiki-themes/github-light.json")
+      ),
     },
-  }
-})
+  };
+});

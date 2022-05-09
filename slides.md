@@ -2828,7 +2828,9 @@ const APPLICATION_TITLE = new InjectionToken<string>('APP_TITLE');
     providers: [
         HeroService, // If HeroService is not provided anywhere, e.g.: @Injectable()
         {
-            provide: APPLICATION_TITLE, // Usage: @Inject(APPLICATION_TITLE) private appTitle: string
+            // Provide a string value that can be injected in other components
+            // Usage: constructor(@Inject(APPLICATION_TITLE) private appTitle: string) {}
+            provide: APPLICATION_TITLE,
             useValue: 'iPuodas'
         },
     ]

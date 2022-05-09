@@ -1,7 +1,9 @@
 .shiki-light {
   background: #f8f8f8 !important;
+  border: 1px solid hsl(0 0% 0% / 12%);
 }
 
 .shiki-dark {
   background: #1b1b1b !important;
+  border: 1px solid hsl(0 0% 100% / 12%);
 }
