@@ -1750,8 +1750,9 @@ Branch: `workshop-6-start`
     ```
 
     ```ts
+    // restaurants.module.ts 
     {
-        path: 'new',
+        path: 'new', // Reached via /restaurants/new
         component: EditRestaurantPageComponent
     }
     ```
@@ -1784,8 +1785,19 @@ Branch: `workshop-6-start`
         constructor(private apiService: RestaurantApiService) {}
 
         resolve(route: ActivatedRouteSnapshot): Observable<Restaurant> {
-            const id = Number(route.params.id);
+            const id = Number(route.params.id); // Number(route.paramMap.get('id'));
             return this.apiService.getOne(id);
+        }
+    }
+    ```
+
+    ```ts
+    // restaurant-api.service.ts
+    export class RestaurantApiService {
+        ...
+
+        getOne(id: Restaurant['id']): Observable<Restaurant> {
+            return this.httpClient.get<Restaurant>(`http://localhost:3000/restaurants/${id}`);
         }
     }
     ```
