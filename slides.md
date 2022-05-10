@@ -1479,7 +1479,7 @@ Branch: `workshop-4-start`
     export class AppComponent {
         restaurants$ = this.restaurantApi.getAll();
         
-        constructor(private restaurantApiService: RestaurantApiService) {}
+        constructor(private restaurantApi: RestaurantApiService) {}
     }
     ```
 
