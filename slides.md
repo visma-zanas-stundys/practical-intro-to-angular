@@ -1277,6 +1277,8 @@ Read more: https://angular.io/guide/content-projection
 
 When Angular updates the HTML of the component
 
+<Scroller>
+
 - Component is initialized
 - Component properties change
 
@@ -1300,7 +1302,9 @@ When Angular updates the HTML of the component
         })
     }
     ```
- 
+</Scroller>
+
+
 ---
 title: Sandbox / Change detection
 layout: iframe
@@ -2306,7 +2310,7 @@ Branch: `workshop-8-start`
             return null; // No errors
         }
 
-        if (value % 1 === 0) {
+        if (Number.isInteger(value)) {
             return null; // No errors
         }
 
@@ -2319,6 +2323,7 @@ Branch: `workshop-8-start`
 4. Bind the newly created `form` using `[formGroup]` directive  
     use `formControlName` directive to bind input elements to the `form`:
     ```html
+    <!-- edit-restaurant-page.component.html -->
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         ...
         <input formControlName="name" type="text" />
@@ -2327,20 +2332,28 @@ Branch: `workshop-8-start`
         ...
 
         <button [disabled]="form.invalid" type="submit">Submit</button>
+
+        <!-- Useful when debugging -->
+        <pre>{{ form.value | json }}</pre>
     </form>
     ```
 5. Show error messages under the field if it is not valid
     ```html
+    <!-- Solution #1 -->
     <input ... [class.has-errors]="form.controls.name.touched && form.controls.name.invalid" />
     {{ form.controls.name.touched && form.controls.name.errors?.required ? 'Required' : '' }}
     <!-- Use json pipe for debugging -->
-    {{ form.value | json }} 
-    <!-- Optional. Write a custom pipe to make the template shorter -->
+    {{ form.controls.name.errors | json }} 
+
+    <!-- Solution #2 (Optional) -->
+    <!-- Write a custom pipe to make the template shorter -->
     <input ... [class.has-errors]="form.controls.name | validation">
     {{ form.controls.name | validation }}
     ```
 
     ```ts
+    // Create the initial code with Angular CLI
+    // $ ng g pipe restaurants/pipes/validation
     import { Pipe, PipeTransform } from '@angular/core';
     import { AbstractControl } from '@angular/forms';
 
