@@ -2019,6 +2019,8 @@ Branch: `workshop-7-start`
 4. Subscribe to the loading stream and set `isLoading` property.
 5. Use the `isLoading` property in the `app.component.html` to indicate a loading state
 
+Read more: https://angular.io/guide/router-reference#router-events
+
 
 ```ts
 @Component({ 
