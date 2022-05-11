@@ -2386,7 +2386,11 @@ Branch: `workshop-8-start`
     
     // edit-restaurant-page.component.ts
     export class EditRestaurantPageComponent {
-        constructor(private router: Router, private route: ActivatedRoute) {}
+        constructor(
+            private apiService: RestaurantApiService,
+            private router: Router,
+            private route: ActivatedRoute
+        ) {}
 
         onSubmit() {
             this.isLoading = true;
@@ -2436,7 +2440,7 @@ Branch: `workshop-8-start`
     }
 
     onSubmit() {
-        const isEditing = this.form.value.id !== undefined;
+        const isEditing = typeof this.form.value.id === 'number';
         const request$ = isEditing
             ? this.apiService.update(this.form.value)
             : this.apiService.create(this.form.value);
